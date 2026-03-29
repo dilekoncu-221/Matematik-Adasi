@@ -1,5 +1,5 @@
 // --- 1. API Ayarları ---
-const API_KEY = "AIzaSyC33kQt5kz6QYcn94RcZCQzChTGBM5fnG4";
+const API_KEY = "AIzaSyAmFCyubmDs5eQingTjTD_eUeT9bBsJIIg";
 
 // --- 2. Konu Veri Seti ---
 const classTopics = {
@@ -243,7 +243,7 @@ window.renderStep = () => {
             listHTML = `<ul class="space-y-4 text-left w-full mt-2">`;
             stepData.content.forEach(item => {
                 let formattedItem = item.replace(/önemli/gi, '<span class="text-pink-500 font-black">önemli</span>').replace(/dikkat/gi, '<span class="text-deepPink font-black drop-shadow-sm">dikkat</span>');
-                listHTML += `<li class="flex items-start bg-pink-50/30 p-4 rounded-2xl"><i class="fa-solid fa-star text-2xl text-yellow-400 mr-4 mt-1 drop-shadow-sm"></i><span class="text-2xl font-bold text-gray-700 leading-relaxed">${formattedItem}</span></li>`;
+                listHTML += `<li class="flex items-start bg-pink-50/70 p-5 rounded-[1.25rem] transition-all hover:bg-pink-100/50"><i class="fa-solid fa-star text-2xl text-yellow-400 mr-4 mt-1 drop-shadow-sm"></i><span class="text-xl font-bold text-gray-700 leading-snug">${formattedItem}</span></li>`;
             });
             listHTML += `</ul>`;
         }
@@ -252,58 +252,60 @@ window.renderStep = () => {
         if (Array.isArray(stepData.example)) {
             exHTML = `<ul class="space-y-3 text-left w-full mt-2">`;
             stepData.example.forEach(item => {
-                exHTML += `<li class="flex items-start"><i class="fa-solid fa-arrow-right text-blue-400 mr-3 mt-1 text-xl"></i><span class="text-2xl font-bold text-gray-700 leading-relaxed">${item}</span></li>`;
+                exHTML += `<li class="flex items-start"><i class="fa-solid fa-arrow-right text-blue-400 mr-3 mt-1 text-lg"></i><span class="text-lg font-bold text-gray-700 leading-snug">${item}</span></li>`;
             });
             exHTML += `</ul>`;
         } else {
-            exHTML = `<p class="text-2xl font-bold text-gray-700 leading-relaxed">${stepData.example}</p>`;
+            exHTML = `<p class="text-lg font-bold text-gray-700 leading-snug">${stepData.example}</p>`;
         }
 
         contentArea.innerHTML = `
-            <div class="page-enter w-full h-full flex flex-col items-center p-6 md:p-10 text-center relative z-10 overflow-y-auto hide-scrollbar">
-                
-                <div class="flex items-center justify-center gap-4 mb-8">
-                    <div class="bg-gradient-to-r from-pink-400 to-pink-500 text-white font-black px-8 py-3 rounded-full shrink-0 shadow-lg text-xl transform -rotate-2">
-                        ✨ Sihirli Sayfa ${window.currentStep + 1} / ${window.currentLessonData.steps.length} ✨
-                    </div>
-                    <button onclick="window.readAloud('readable-content')" class="bg-blue-100 text-blue-600 hover:bg-blue-200 border-2 border-blue-200 font-black px-5 py-3 rounded-full shadow-sm transition transform hover:scale-105 flex items-center z-20">
-                        <i class="fa-solid fa-volume-high mr-2 text-xl animate-pulse"></i> Sesli Oku
-                    </button>
-                </div>
-                
-                <div id="readable-content" class="w-full max-w-5xl flex flex-col gap-8 pb-10">
-                    <h3 class="text-4xl md:text-5xl font-black text-gray-800 mb-2 drop-shadow-sm">${stepData.title}</h3>
-                    <div class="bg-white p-8 md:p-10 rounded-[2.5rem] border-4 border-pink-200 shadow-xl flex flex-col items-center">
-                         ${listHTML}
-                    </div>
+            <div class="page-enter w-full h-full flex flex-col items-center p-6 md:p-10 text-center relative z-10 overflow-y-auto hide-scrollbar pt-14">
+                
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-400 to-pink-500 text-white font-black px-6 py-2 rounded-full shadow-md text-sm sm:text-lg transform rotate-[-1deg] flex items-center z-30 tracking-wide border-2 border-white">
+                    ✨ Sihirli Sayfa ${window.currentStep + 1} / ${window.currentLessonData.steps.length} ✨
+                </div>
+                
+                <div class="absolute right-4 top-4 z-30">
+                    <button onclick="window.readAloud('readable-content')" class="bg-white text-gray-500 hover:text-blue-500 border border-gray-200 hover:border-blue-200 font-bold px-3 py-1.5 rounded-full shadow-sm transition transform hover:scale-105 flex items-center text-xs opacity-70 hover:opacity-100">
+                        <i class="fa-solid fa-volume-high animate-pulse mr-1.5"></i> Sesli Oku
+                    </button>
+                </div>
+                
+                <div id="readable-content" class="w-full max-w-5xl flex flex-col gap-6 pb-4">
+                    <h3 class="text-3xl md:text-5xl font-black text-gray-800 drop-shadow-sm mb-2">${stepData.title}</h3>
+                    
+                    <div class="bg-white p-6 md:p-8 rounded-[2rem] border-[3px] border-pink-100 shadow-sm flex flex-col items-center w-full">
+                         ${listHTML}
+                    </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="bg-yellow-50 border-4 border-yellow-300 p-8 rounded-[2rem] text-left shadow-md hover:shadow-lg transition">
-                            <h4 class="text-yellow-600 font-black mb-4 flex items-center text-2xl">
-                                <i class="fa-solid fa-lightbulb text-4xl mr-3 animate-pulse text-yellow-500"></i> Püf Noktası
-                            </h4>
-                            <p class="text-2xl font-bold text-gray-700 leading-relaxed">${stepData.tip}</p>
-                        </div>
-                        
-                        <div class="bg-blue-50 border-4 border-blue-300 p-8 rounded-[2rem] text-left shadow-md hover:shadow-lg transition">
-                            <h4 class="text-blue-500 font-black mb-4 flex items-center text-2xl">
-                                <i class="fa-solid fa-flask text-4xl mr-3 text-blue-500"></i> Harika Bir Örnek
-                            </h4>
-                            <div class="bg-white p-5 rounded-2xl border-2 border-blue-100 shadow-inner">
-                                ${exHTML}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch w-full mt-2">
+                        <div class="bg-yellow-50 border-[3px] border-yellow-300 p-6 md:p-8 rounded-[2rem] text-left shadow-sm h-full flex flex-col">
+                            <h4 class="text-yellow-600 font-black mb-4 flex items-center text-xl md:text-2xl">
+                                <i class="fa-solid fa-lightbulb text-3xl mr-3 text-yellow-500"></i> Püf Noktası
+                            </h4>
+                            <p class="text-lg font-bold text-gray-700 leading-snug mt-2 relative z-10">${stepData.tip}</p>
+                        </div>
+                        
+                        <div class="bg-[#f0f9ff] border-[3px] border-blue-300 p-6 md:p-8 rounded-[2rem] text-left shadow-sm h-full flex flex-col">
+                            <h4 class="text-blue-500 font-black mb-4 flex items-center text-xl md:text-2xl">
+                                <i class="fa-solid fa-flask text-3xl mr-3 text-blue-500"></i> Harika Bir Örnek
+                            </h4>
+                            <div class="bg-white p-5 rounded-2xl border-2 border-blue-100 shadow-sm flex-grow mt-2">
+                                ${exHTML}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
 
         footerArea.innerHTML = `
-            <button onclick="window.closeLessonModal()" class="bg-white border-4 border-gray-100 text-gray-400 font-black py-4 px-10 rounded-2xl hover:bg-gray-50 transition text-lg relative z-10">Sonra Devam Et</button>
-            <button onclick="window.nextStep()" class="bg-pink-500 hover:bg-pink-600 text-white font-black py-4 px-12 rounded-2xl shadow-xl hover:-translate-y-1 text-2xl transform transition relative z-10 flex items-center gap-2">
-                İleri <i class="fa-solid fa-rocket"></i>
-            </button>
-        `;
+            <button onclick="window.closeLessonModal()" class="bg-white border-2 border-gray-200 text-gray-400 font-bold py-3 px-8 rounded-xl hover:bg-gray-50 transition text-md relative z-10 shadow-sm">Sonra Devam Et</button>
+            <button onclick="window.nextStep()" class="bg-pink-500 hover:bg-pink-600 text-white font-black py-3 px-10 rounded-xl shadow-md hover:-translate-y-1 text-xl transform transition relative z-10 flex items-center gap-2">
+                İleri <i class="fa-solid fa-rocket ms-1"></i>
+            </button>
+        `;
     } else {
         window.renderQuizStep();
     }
@@ -527,35 +529,37 @@ window.generateTopics = () => {
             card.setAttribute('data-grade', grade);
             card.id = topicId;
 
-            card.className = `topic-card cursor-pointer p-6 rounded-3xl border-4 transition-all duration-300 transform hover:scale-105 shadow-lg
-                ${isDone ? `${c.light} border-green-400 shadow-green-100` : `bg-white ${c.border} shadow-pink-50`}`;
+            card.className = `topic-card cursor-pointer p-6 pt-10 rounded-[2rem] border-4 transition-all duration-300 transform hover:scale-105 shadow-md flex flex-col relative min-h-[16rem]
+                ${isDone ? `${c.light} border-green-300 shadow-green-100/50` : `bg-white ${c.border} shadow-pink-50/50`}`;
 
             card.innerHTML = `
-                <div class="flex justify-between items-start mb-4">
-                    <span class="${isDone ? c.check : c.badge} text-white text-sm font-black px-4 py-1.5 rounded-full shadow-sm">${grade}. Sınıf</span>
-                    <div class="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border-2 border-yellow-200">
-                         <i class="fa-solid fa-star text-yellow-500 text-lg"></i>
-                         <span class="font-black text-yellow-600 ml-1">${lessonPoints} Puan</span>
-                    </div>
-                </div>
-                <h3 class="text-2xl font-black text-gray-800 leading-tight mb-3 h-16 flex items-center">${topicName}</h3>
-                
-                <p class="text-sm font-bold ${isDone ? 'text-green-600' : c.text} mb-5 flex items-start">
-                    ${isDone
-                    ? '<i class="fa-solid fa-circle-check mt-1 mr-2 text-green-500"></i> Harika, bu konuyu tamamladın!'
-                    : `<i class="fa-solid fa-sparkles mt-1 mr-2"></i> ${topicName} ${funSentence}`
+                <div class="absolute -top-4 left-6 ${isDone ? c.check : c.badge} text-white font-black px-4 py-1.5 rounded-full shadow-md z-10 text-sm border-2 border-white">
+                    ${grade}. Sınıf
+                </div>
+                
+                <div class="absolute -top-4 right-6 flex items-center gap-1 bg-white px-3 py-1.5 rounded-full border-2 border-yellow-300 shadow-md z-10">
+                     <i class="fa-solid fa-star text-yellow-500 text-sm"></i>
+                     <span class="font-black text-yellow-600 text-sm leading-none pt-0.5">${lessonPoints} Puan</span>
+                </div>
+                
+                <h3 class="text-2xl font-black text-gray-800 leading-tight mb-2 flex-grow">${topicName}</h3>
+                
+                <p class="text-sm font-bold ${isDone ? 'text-green-600/80' : 'text-gray-500'} mb-6 flex-grow">
+                    ${isDone
+                    ? 'Bu konuyu başarıyla tamamladın! 🎉'
+                    : `${topicName} ${funSentence}`
                 }
-                </p>
-                
-                <div class="flex items-center justify-between mt-auto border-t-2 border-gray-100 pt-5">
-                    <span class="text-sm font-black ${isDone ? 'text-green-600' : c.text} uppercase tracking-wider">
-                        ${isDone ? 'TEKRAR ET' : 'ÖĞRENMEYE BAŞLA'}
-                    </span>
-                    <div class="h-12 w-12 flex items-center justify-center rounded-full ${isDone ? c.check : c.badge} text-white shadow-md transition-transform hover:rotate-12 transform hover:scale-110">
-                        <i class="fa-solid ${isDone ? 'fa-check' : 'fa-play'} text-lg"></i>
-                    </div>
-                </div>
-            `;
+                </p>
+                
+                <div class="mt-auto border-t-2 ${isDone ? 'border-green-100' : 'border-gray-100'} pt-4 flex items-center justify-between">
+                    <span class="text-sm font-black ${isDone ? 'text-green-600' : c.text} uppercase tracking-wider relative group overflow-hidden">
+                        ${isDone ? 'TEKRAR ET' : 'ÖĞRENMEYE BAŞLA'}
+                    </span>
+                    <div class="h-10 w-10 flex items-center justify-center rounded-full ${isDone ? c.check : c.badge} text-white shadow-md transition-transform hover:rotate-12 transform hover:scale-110">
+                        <i class="fa-solid ${isDone ? 'fa-check' : 'fa-play'} text-sm font-bold"></i>
+                    </div>
+                </div>
+            `;
 
             card.onclick = () => window.startLesson(topicId, topicName);
             grid.appendChild(card);

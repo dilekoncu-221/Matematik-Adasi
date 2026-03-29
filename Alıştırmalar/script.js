@@ -1,5 +1,5 @@
 // --- 1. API Ayarları ---
-const API_KEY = "AIzaSyC33kQt5kz6QYcn94RcZCQzChTGBM5fnG4gig";
+const API_KEY = "AIzaSyAmFCyubmDs5eQingTjTD_eUeT9bBsJIIg";
 
 const classData = {
     "1": ["Rakamları Tanıyalım", "Nesne Sayma", "Toplama Giriş", "Çıkarma Giriş", "Geometrik Şekiller", "Örüntüler", "Paralarımız", "Zamanı Ölçme", "Uzamsal İlişkiler"],
@@ -121,38 +121,37 @@ const generateTopics = () => {
             card.id = topicId;
             card.style.display = 'none';
 
-            card.className = `topic-card cursor-pointer p-6 rounded-3xl border-4 transition-all duration-300 transform hover:scale-105 shadow-lg flex flex-col justify-between min-h-[16rem] relative
-                ${isDone ? 'bg-green-50 border-green-400 shadow-green-100' : 'bg-white border-blue-200 shadow-blue-100'}`;
+            card.className = `topic-card cursor-pointer p-6 pt-10 rounded-[2rem] border-4 transition-all duration-300 transform hover:scale-105 shadow-md flex flex-col relative min-h-[16rem]
+                ${isDone ? 'bg-green-50 border-green-300 shadow-green-100/50' : 'bg-white border-blue-200 shadow-blue-50/50'}`;
 
             card.innerHTML = `
-                <div class="${isDone ? 'bg-green-500' : 'bg-blue-500'} text-white text-xs font-black px-3 py-1 rounded-full shadow-sm w-max mb-4">${grade}. Sınıf</div>
-                
-                <div class="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border-2 border-yellow-300 shadow-md absolute -top-4 -right-4 z-20 transform rotate-2">
-                     <span class="font-black ${isDone ? 'text-green-600' : 'text-yellow-600'} text-xs flex items-center">
-                         ${isDone ? '<i class="fa-solid fa-sparkles mr-1"></i> Kazanıldı' : '<i class="fa-solid fa-star fa-bounce text-yellow-500 mr-1"></i> 10 ⭐'}
-                     </span>
-                </div>
-                
-                <h3 class="text-xl font-black text-gray-800 leading-tight mb-2 flex-grow">${topicName}</h3>
-                
-                <p class="text-xs font-bold ${isDone ? 'text-green-600' : 'text-blue-500'} mb-5 flex items-start">
-                    ${isDone
-                    ? '<i class="fa-solid fa-circle-check mt-0.5 mr-2 text-green-500"></i> Alıştırmayı başarıyla tamamladın!'
-                    : `<i class="fa-solid fa-sparkles mt-0.5 mr-2"></i> ${topicName} ${funSentence}`
+                <div class="absolute -top-4 left-6 ${isDone ? 'bg-green-500' : 'bg-[#3b82f6]'} text-white font-black px-4 py-1.5 rounded-full shadow-md z-10 text-sm border-2 border-white">
+                    ${grade}. Sınıf
+                </div>
+                
+                <div class="absolute -top-4 right-6 flex items-center gap-1 bg-white px-3 py-1.5 rounded-full border-2 border-yellow-300 shadow-md z-10">
+                     <i class="fa-solid fa-star text-yellow-500 text-sm"></i>
+                     <span class="font-black text-yellow-600 text-sm leading-none pt-0.5">${isDone ? 'Kazanıldı' : '10 ⭐'}</span>
+                </div>
+                
+                <h3 class="text-2xl font-black text-gray-800 leading-tight mb-2 flex-grow">${topicName}</h3>
+                
+                <p class="text-sm font-bold ${isDone ? 'text-green-600/80' : 'text-gray-500'} mb-6 flex-grow">
+                    ${isDone
+                    ? 'Bu alıştırmayı başarıyla tamamladın! 🎉'
+                    : `${topicName} ${funSentence}`
                 }
-                </p>
-                
-                <div class="mt-auto">
-                    <div class="flex items-center justify-between border-t ${isDone ? 'border-green-200' : 'border-blue-50'} pt-4">
-                        <span class="text-xs font-black ${isDone ? 'text-green-600' : 'text-blue-500'} uppercase">
-                            ${isDone ? 'TEKRAR ÇÖZ' : 'TESTE BAŞLA'}
-                        </span>
-                        <div class="h-10 w-10 flex items-center justify-center rounded-full ${isDone ? 'bg-green-500' : 'bg-blue-500'} text-white shadow-md transition-transform hover:rotate-12">
-                            <i class="fa-solid ${isDone ? 'fa-pen' : 'fa-play'} text-sm"></i>
-                        </div>
-                    </div>
-                </div>
-            `;
+                </p>
+                
+                <div class="mt-auto border-t-2 ${isDone ? 'border-green-100' : 'border-gray-100'} pt-4 flex items-center justify-between">
+                    <span class="text-sm font-black ${isDone ? 'text-green-600' : 'text-[#3b82f6]'} uppercase tracking-wider relative group overflow-hidden">
+                        ${isDone ? 'TEKRAR ÇÖZ' : 'TESTE BAŞLA'}
+                    </span>
+                    <div class="h-10 w-10 flex items-center justify-center rounded-full ${isDone ? 'bg-green-500' : 'bg-[#3b82f6]'} text-white shadow-md transition-transform hover:rotate-12 transform hover:scale-110">
+                        <i class="fa-solid ${isDone ? 'fa-pen' : 'fa-play'} text-sm font-bold"></i>
+                    </div>
+                </div>
+            `;
 
             card.onclick = () => startLesson(topicId, topicName, grade);
             grid.appendChild(card);
