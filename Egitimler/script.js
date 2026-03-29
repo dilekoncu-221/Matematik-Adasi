@@ -1,5 +1,5 @@
 // --- 1. API Ayarları ---
-const API_KEY = "AIzaSyCOeW7CESe4EEK9xAPno1UmpFnuTc7Fmt8"; 
+const API_KEY = "AIzaSyBsh44drO5JpfACJJcWefuFYS5gN3SOAWQ";
 
 // --- 2. Konu Veri Seti ---
 const classTopics = {
@@ -39,7 +39,7 @@ window.readAloud = (elementId) => {
         window.speechSynthesis.cancel(); // Önceki sesi durdur
         const text = document.getElementById(elementId).innerText;
         const utterance = new SpeechSynthesisUtterance(text);
-        
+
         utterance.lang = 'tr-TR';
         utterance.rate = 0.9;  // Okuma hızı (Çocuklar için ideal)
         utterance.pitch = 1.2; // YENİ: Sesin inceliği. 1.2 yaparak daha neşeli ve tatlı bir öğretmen tonu elde ediyoruz.
@@ -47,15 +47,15 @@ window.readAloud = (elementId) => {
         // YENİ: Bilgisayardaki en doğal Türkçe sesi bulmaya çalış
         const voices = window.speechSynthesis.getVoices();
         const turkishVoices = voices.filter(voice => voice.lang.includes('tr'));
-        
+
         if (turkishVoices.length > 0) {
             // Özellikle "Google" veya Mac'lerdeki "Yelda" gibi daha doğal sesleri öncelikli seç
-            const naturalVoice = turkishVoices.find(voice => 
-                voice.name.includes('Google') || 
-                voice.name.includes('Yelda') || 
+            const naturalVoice = turkishVoices.find(voice =>
+                voice.name.includes('Google') ||
+                voice.name.includes('Yelda') ||
                 voice.name.includes('Premium')
             ) || turkishVoices[0]; // Bulamazsa ilk Türkçe sesi seç
-            
+
             utterance.voice = naturalVoice;
         }
 
@@ -132,17 +132,17 @@ async function fetchContentFromAI(topicName, grade) {
         });
 
         const result = await response.json();
-        if (!response.ok || result.error) return null; 
+        if (!response.ok || result.error) return null;
 
         let aiText = result.candidates[0].content.parts[0].text;
         aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
         const firstBrace = aiText.indexOf('{');
         const lastBrace = aiText.lastIndexOf('}');
-        
+
         if (firstBrace !== -1 && lastBrace !== -1) {
             aiText = aiText.substring(firstBrace, lastBrace + 1);
         }
-        
+
         return JSON.parse(aiText);
     } catch (error) {
         return null;
@@ -153,7 +153,7 @@ const calculatePoints = (lessonGrade) => {
     const user = JSON.parse(localStorage.getItem('mathIslandUser')) || {};
     const userGrade = parseInt(String(user.sinif || "1").charAt(0));
     const targetGrade = parseInt(lessonGrade);
-    
+
     if (targetGrade < userGrade) return 5;
     if (targetGrade > userGrade) return 20;
     return 10;
@@ -179,14 +179,14 @@ window.startLesson = async (id, name, isRetry = false) => {
     const lessonNameDisplay = document.getElementById('lesson-name-display');
     const contentArea = document.getElementById('lesson-content');
     const footerArea = document.querySelector('.lesson-footer');
-    
+
     const rewardBadge = modal.querySelector('.bg-yellow-100');
     if (rewardBadge) {
         rewardBadge.innerHTML = `<i class="fa-solid fa-star"></i> Ödül: ${window.currentLessonPoints} ⭐`;
     }
 
     lessonNameDisplay.innerText = name;
-    
+
     const oldSymbols = modal.querySelectorAll('.magic-bg-symbols');
     oldSymbols.forEach(el => el.remove());
 
@@ -216,7 +216,7 @@ window.startLesson = async (id, name, isRetry = false) => {
         </div>
     `;
     footerArea.innerHTML = `<button onclick="window.closeLessonModal()" class="bg-white border-4 border-gray-100 text-gray-400 font-black py-3 px-8 rounded-2xl relative z-10 hover:bg-gray-50 transition">Vazgeç</button>`;
-    
+
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 
@@ -237,7 +237,7 @@ window.renderStep = () => {
 
     if (window.currentStep < window.currentLessonData.steps.length) {
         const stepData = window.currentLessonData.steps[window.currentStep];
-        
+
         let listHTML = "";
         if (Array.isArray(stepData.content)) {
             listHTML = `<ul class="space-y-4 text-left w-full mt-2">`;
@@ -318,7 +318,7 @@ window.renderQuizStep = () => {
     window.stopReading(); // Soruya geçince sesi sustur
     const contentArea = document.getElementById('lesson-content');
     const footerArea = document.querySelector('.lesson-footer');
-    
+
     const qIndex = window.currentQuizStep;
     const qData = window.currentLessonData.quiz[qIndex];
     const isLastQuestion = qIndex === window.currentLessonData.quiz.length - 1;
@@ -339,8 +339,8 @@ window.renderQuizStep = () => {
                 <h4 class="font-black text-3xl md:text-4xl text-gray-800 mb-10 text-center leading-tight">${qData.q}</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     ${qData.options.map((opt, optIdx) => {
-                        const isChecked = window.userAnswers[qIndex] === optIdx ? "checked" : "";
-                        return `
+        const isChecked = window.userAnswers[qIndex] === optIdx ? "checked" : "";
+        return `
                         <label class="flex items-center p-6 rounded-3xl border-4 border-gray-100 cursor-pointer hover:bg-pink-50 hover:border-pink-300 transition-all has-[:checked]:bg-pink-100 has-[:checked]:border-pink-500 has-[:checked]:scale-[1.02] has-[:checked]:shadow-md">
                             <input type="radio" name="q${qIndex}" value="${optIdx}" class="hidden" ${isChecked} onchange="window.userAnswers[${qIndex}] = ${optIdx}">
                             <div class="w-8 h-8 rounded-full border-4 border-gray-300 flex items-center justify-center mr-4 bg-white transition-colors">
@@ -420,9 +420,9 @@ window.checkQuizResults = () => {
     const footerArea = document.querySelector('.lesson-footer');
 
     if (correctCount >= 4) {
-        
+
         // YENİ: KONFETİ PATLAMASI! 🎉
-        if(window.confetti) {
+        if (window.confetti) {
             confetti({
                 particleCount: 150,
                 spread: 80,
@@ -483,8 +483,8 @@ window.completeLessonAction = () => {
         localStorage.setItem('mathIslandUser', JSON.stringify(user));
 
         if (typeof window.updateProfileUI === "function") window.updateProfileUI(user);
-        if (typeof window.generateTopics === "function") window.generateTopics(); 
-        
+        if (typeof window.generateTopics === "function") window.generateTopics();
+
         const activeFilterBtn = document.querySelector('.filter-btn.active-filter');
         const currentGrade = activeFilterBtn ? activeFilterBtn.id.split('-')[1] : '1';
         if (typeof window.filterGrade === "function") window.filterGrade(currentGrade);
@@ -515,13 +515,13 @@ window.generateTopics = () => {
     grid.innerHTML = '';
 
     Object.keys(classTopics).forEach(grade => {
-        const c = gradeColors[grade]; 
-        
+        const c = gradeColors[grade];
+
         classTopics[grade].forEach((topicName, index) => {
             const topicId = `g${grade}-t${index}`;
             const isDone = completedLessons.includes(topicId);
             const lessonPoints = calculatePoints(grade);
-            const funSentence = getFunSentence(topicName); 
+            const funSentence = getFunSentence(topicName);
 
             const card = document.createElement('div');
             card.setAttribute('data-grade', grade);
@@ -541,10 +541,10 @@ window.generateTopics = () => {
                 <h3 class="text-2xl font-black text-gray-800 leading-tight mb-3 h-16 flex items-center">${topicName}</h3>
                 
                 <p class="text-sm font-bold ${isDone ? 'text-green-600' : c.text} mb-5 flex items-start">
-                    ${isDone 
-                        ? '<i class="fa-solid fa-circle-check mt-1 mr-2 text-green-500"></i> Harika, bu konuyu tamamladın!' 
-                        : `<i class="fa-solid fa-sparkles mt-1 mr-2"></i> ${topicName} ${funSentence}`
-                    }
+                    ${isDone
+                    ? '<i class="fa-solid fa-circle-check mt-1 mr-2 text-green-500"></i> Harika, bu konuyu tamamladın!'
+                    : `<i class="fa-solid fa-sparkles mt-1 mr-2"></i> ${topicName} ${funSentence}`
+                }
                 </p>
                 
                 <div class="flex items-center justify-between mt-auto border-t-2 border-gray-100 pt-5">
@@ -620,19 +620,19 @@ window.filterGrade = (grade) => {
     const completedLessons = user.completedLessons || [];
     const totalInGrade = classTopics[grade].length;
     let completedInGrade = 0;
-    
+
     classTopics[grade].forEach((_, index) => {
         if (completedLessons.includes(`g${grade}-t${index}`)) completedInGrade++;
     });
-    
+
     const percent = Math.round((completedInGrade / totalInGrade) * 100);
-    
+
     const progressContainer = document.getElementById('progress-container');
     const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-text');
     const progressPercent = document.getElementById('progress-percent');
 
-    if(progressContainer) {
+    if (progressContainer) {
         progressContainer.classList.remove('hidden');
         progressText.innerText = `${grade}. Sınıf İlerlemen`;
         progressPercent.innerText = `%${percent}`;
@@ -676,7 +676,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!['1', '2', '3', '4'].includes(startingGrade)) {
             startingGrade = '1';
         }
-        
+
         highlightUserGradeButton(startingGrade);
         window.filterGrade(startingGrade);
 

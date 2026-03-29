@@ -1,5 +1,5 @@
 // --- 1. API Ayarları ---
-const API_KEY = "AIzaSyCOeW7CESe4EEK9xAPno1UmpFnuTc7Fmt8";
+const API_KEY = "AIzaSyBsh44drO5JpfACJJcWefuFYS5gN3SOAWQ";
 
 const classData = {
     "1": ["Rakamları Tanıyalım", "Nesne Sayma", "Toplama Giriş", "Çıkarma Giriş", "Geometrik Şekiller", "Örüntüler", "Paralarımız", "Zamanı Ölçme", "Uzamsal İlişkiler"],
