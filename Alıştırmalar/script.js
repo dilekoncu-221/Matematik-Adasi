@@ -1,5 +1,5 @@
 // --- 1. API Ayarları ---
-const API_KEY = "AIzaSyBsh44drO5JpfACJJcWefuFYS5gN3SOAWQ";
+const API_KEY = "AIzaSyAOd6au0mWi62Q3LXEX_eqWhiT_6-hMg1k";
 
 const classData = {
     "1": ["Rakamları Tanıyalım", "Nesne Sayma", "Toplama Giriş", "Çıkarma Giriş", "Geometrik Şekiller", "Örüntüler", "Paralarımız", "Zamanı Ölçme", "Uzamsal İlişkiler"],
@@ -78,7 +78,7 @@ async function fetchQuestionsFromAI(topicName, grade) {
     DİKKAT: correctAnswer alanı SADECE DOĞRU ŞIKKIN METNİYLE BİREBİR AYNI olmalıdır (Örneğin "Seçenek 2"). "A", "B" gibi harf koyma, options dizisinden doğru olanı aynen yaz. Toplam 10 obje üret.`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
