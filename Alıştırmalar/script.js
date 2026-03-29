@@ -26,28 +26,28 @@ const getFunSentence = (topic) => {
 const generateFallbackQuestions = (grade) => {
     const questions = [];
     const ops = grade == "1" ? ['+'] : grade == "2" ? ['+', '-'] : grade == "3" ? ['+', '-', '*'] : ['+', '-', '*', '/'];
-    
+
     for (let i = 0; i < 10; i++) {
         const op = ops[Math.floor(Math.random() * ops.length)];
         let num1, num2, answer, explanation;
-        
-        switch(op) {
-            case '+': num1 = Math.floor(Math.random() * 20)+1; num2 = Math.floor(Math.random() * 20)+1; answer = num1 + num2; 
-                      explanation = `${num1} ile ${num2}'yi toplarsak ${answer} eder.`; break;
-            case '-': num1 = Math.floor(Math.random() * 20)+10; num2 = Math.floor(Math.random() * 10)+1; answer = num1 - num2; 
-                      explanation = `${num1}'den ${num2} çıkarırsak geriye ${answer} kalır.`; break;
-            case '*': num1 = Math.floor(Math.random() * 10)+1; num2 = Math.floor(Math.random() * 10)+1; answer = num1 * num2; 
-                      explanation = `${num1} tane ${num2}, ${answer} yapmaktadır.`; break;
-            case '/': num2 = Math.floor(Math.random() * 9)+2; num1 = num2 * (Math.floor(Math.random() * 10)+1); answer = num1 / num2; 
-                      explanation = `${num1} sayısının içinde ${num2} sayısından tam ${answer} tane vardır.`; break;
+
+        switch (op) {
+            case '+': num1 = Math.floor(Math.random() * 20) + 1; num2 = Math.floor(Math.random() * 20) + 1; answer = num1 + num2;
+                explanation = `${num1} ile ${num2}'yi toplarsak ${answer} eder.`; break;
+            case '-': num1 = Math.floor(Math.random() * 20) + 10; num2 = Math.floor(Math.random() * 10) + 1; answer = num1 - num2;
+                explanation = `${num1}'den ${num2} çıkarırsak geriye ${answer} kalır.`; break;
+            case '*': num1 = Math.floor(Math.random() * 10) + 1; num2 = Math.floor(Math.random() * 10) + 1; answer = num1 * num2;
+                explanation = `${num1} tane ${num2}, ${answer} yapmaktadır.`; break;
+            case '/': num2 = Math.floor(Math.random() * 9) + 2; num1 = num2 * (Math.floor(Math.random() * 10) + 1); answer = num1 / num2;
+                explanation = `${num1} sayısının içinde ${num2} sayısından tam ${answer} tane vardır.`; break;
         }
 
         const options = [answer];
-        while(options.length < 4) {
+        while (options.length < 4) {
             const wrongBase = answer + (Math.floor(Math.random() * 10) - 5);
             if (!options.includes(wrongBase) && wrongBase > 0) options.push(wrongBase);
         }
-        
+
         options.sort(() => Math.random() - 0.5);
 
         questions.push({
@@ -91,11 +91,11 @@ async function fetchQuestionsFromAI(topicName, grade) {
         aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
         const firstBracket = aiText.indexOf('[');
         const lastBracket = aiText.lastIndexOf(']');
-        
+
         if (firstBracket !== -1 && lastBracket !== -1) {
             aiText = aiText.substring(firstBracket, lastBracket + 1);
         }
-        
+
         return JSON.parse(aiText);
     } catch (error) {
         console.error("API Hatası:", error);
@@ -119,7 +119,7 @@ const generateTopics = () => {
             const card = document.createElement('div');
             card.setAttribute('data-grade', grade);
             card.id = topicId;
-            card.style.display = 'none'; 
+            card.style.display = 'none';
 
             card.className = `topic-card cursor-pointer p-6 rounded-3xl border-4 transition-all duration-300 transform hover:scale-105 shadow-lg flex flex-col justify-between min-h-[16rem] relative
                 ${isDone ? 'bg-green-50 border-green-400 shadow-green-100' : 'bg-white border-blue-200 shadow-blue-100'}`;
@@ -136,10 +136,10 @@ const generateTopics = () => {
                 <h3 class="text-xl font-black text-gray-800 leading-tight mb-2 flex-grow">${topicName}</h3>
                 
                 <p class="text-xs font-bold ${isDone ? 'text-green-600' : 'text-blue-500'} mb-5 flex items-start">
-                    ${isDone 
-                        ? '<i class="fa-solid fa-circle-check mt-0.5 mr-2 text-green-500"></i> Alıştırmayı başarıyla tamamladın!' 
-                        : `<i class="fa-solid fa-sparkles mt-0.5 mr-2"></i> ${topicName} ${funSentence}`
-                    }
+                    ${isDone
+                    ? '<i class="fa-solid fa-circle-check mt-0.5 mr-2 text-green-500"></i> Alıştırmayı başarıyla tamamladın!'
+                    : `<i class="fa-solid fa-sparkles mt-0.5 mr-2"></i> ${topicName} ${funSentence}`
+                }
                 </p>
                 
                 <div class="mt-auto">
@@ -164,22 +164,22 @@ const renderQuestion = () => {
     const q = currentQuestions[currentQuestionIndex];
     document.getElementById('question-counter').innerText = `Soru ${currentQuestionIndex + 1}/${currentQuestions.length}`;
     document.getElementById('quiz-question-text').innerText = q.text;
-    
+
     const optionsContainer = document.getElementById('quiz-options-container');
     optionsContainer.innerHTML = '';
-    
+
     q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         const isSelected = userAnswers[currentQuestionIndex] === opt;
-        
+
         btn.className = `w-full text-left p-4 rounded-2xl border-4 font-black text-lg transition-all transform hover:scale-105
             ${isSelected ? 'bg-blue-100 border-blue-500 text-blue-800 scale-105' : 'bg-white border-blue-100 text-gray-700 hover:border-blue-300'}`;
-        
+
         btn.innerHTML = `<span class="bg-blue-50 text-blue-500 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 font-bold">${['A', 'B', 'C', 'D'][idx]}</span> ${opt}`;
-        
+
         btn.onclick = () => {
             userAnswers[currentQuestionIndex] = opt;
-            renderQuestion(); 
+            renderQuestion();
         };
         optionsContainer.appendChild(btn);
     });
@@ -240,7 +240,7 @@ const showQuizResult = () => {
     const resultContainer = document.getElementById('quiz-result-container');
     resultContainer.classList.remove('hidden');
     resultContainer.classList.add('flex');
-    
+
     document.getElementById('prev-question-btn').classList.add('hidden');
     document.getElementById('next-question-btn').classList.add('hidden');
 
@@ -262,7 +262,7 @@ const showQuizResult = () => {
         finishBtn.classList.replace('bg-red-500', 'bg-green-500');
         finishBtn.classList.replace('hover:bg-red-600', 'hover:bg-green-600');
 
-        if(typeof confetti !== 'undefined') {
+        if (typeof confetti !== 'undefined') {
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#3b82f6', '#bfdbfe', '#f87171', '#4ade80'] });
         }
     } else {
@@ -277,7 +277,7 @@ const showQuizResult = () => {
             <div class="w-full max-w-2xl mt-4"><h4 class="text-left font-black text-red-500 mb-3 border-b-2 border-red-200 pb-2">Hatalarına Göz At:</h4>${feedbackHTML}</div>
         `;
         finishBtn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Tekrar Dene`;
-        
+
         // CSS Sınıflarını Geriye Döndür / Ayarla
         finishBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
         finishBtn.classList.add('bg-blue-500', 'hover:bg-blue-600');
@@ -290,21 +290,21 @@ window.startLesson = async (id, name, grade) => {
     if (nameDisplay) nameDisplay.innerText = name;
 
     const modal = document.getElementById('lesson-modal');
-    
+
     currentQuestions = [];
     currentQuestionIndex = 0;
     userAnswers = new Array(10).fill(null);
     isQuizPassed = false;
-    
+
     document.getElementById('quiz-question-container').classList.remove('hidden');
     document.getElementById('quiz-result-container').classList.add('hidden');
     document.getElementById('quiz-result-container').classList.remove('flex');
     document.getElementById('quiz-result-container').innerHTML = ''; // Reset details
-    
+
     const prevBtn = document.getElementById('prev-question-btn');
     const nextBtn = document.getElementById('next-question-btn');
     const finishBtn = document.getElementById('finish-lesson-btn');
-    
+
     prevBtn.classList.remove('hidden');
     nextBtn.classList.remove('hidden');
     finishBtn.classList.add('hidden');
@@ -314,7 +314,7 @@ window.startLesson = async (id, name, grade) => {
     if (modal) {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
-        
+
         const oldSymbols = modal.querySelectorAll('.magic-bg-symbols');
         oldSymbols.forEach(el => el.remove());
 
@@ -348,10 +348,10 @@ window.startLesson = async (id, name, grade) => {
         } else {
             currentQuestions = generateFallbackQuestions(grade);
         }
-    } catch(e) {
+    } catch (e) {
         currentQuestions = generateFallbackQuestions(grade);
     }
-    
+
     prevBtn.classList.remove('hidden');
     nextBtn.classList.remove('hidden');
 
@@ -476,14 +476,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Quiz Button Listeners
     document.getElementById('prev-question-btn')?.addEventListener('click', () => {
-        if(currentQuestionIndex > 0) {
+        if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             renderQuestion();
         }
     });
 
     document.getElementById('next-question-btn')?.addEventListener('click', () => {
-        if(currentQuestionIndex < currentQuestions.length - 1) {
+        if (currentQuestionIndex < currentQuestions.length - 1) {
             currentQuestionIndex++;
             renderQuestion();
         }
@@ -500,11 +500,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const finishBtn = document.getElementById('finish-lesson-btn');
     if (finishBtn) {
         finishBtn.addEventListener('click', () => {
-            
-            if(document.getElementById('quiz-result-container').classList.contains('hidden')) {
+
+            if (document.getElementById('quiz-result-container').classList.contains('hidden')) {
                 // Tüm soruları yanıtlamadıysa uyar (Opsiyonel: Eğer boş bıraktıysa)
-                if(userAnswers.includes(null)) {
-                    if(!confirm("Boş bıraktığın sorular var. Yinede bitirmek istiyor musun?")) return;
+                if (userAnswers.includes(null)) {
+                    if (!confirm("Boş bıraktığın sorular var. Yinede bitirmek istiyor musun?")) return;
                 }
                 showQuizResult();
                 return;
