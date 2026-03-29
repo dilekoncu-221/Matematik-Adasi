@@ -60,46 +60,45 @@ const generateFallbackQuestions = (grade) => {
     return questions;
 };
 
-// --- YENİLENMİŞ VE DÜZELTİLMİŞ API FONKSİYONU ---
 async function fetchQuestionsFromAI(topicName, grade) {
     const prompt = `Sen tatlı ve neşeli bir ilkokul matematik öğretmenisin. 
-    Öğrencin ${grade}. sınıf öğrencisi. Konu: "${topicName}".
-    Bana SADECE geçerli bir JSON array döndür. Kod bloğu KULLANMA.
-    Bu konuyla ilgili tam 10 tane, çocukların seviyesine uygun çoktan seçmeli matematik test sorusu hazırla.
-    
-    JSON yapısı tam olarak şöyle olmalı (dizi içinde 10 obje):
-    [
-        {
-            "text": "Soru 1 metni",
-            "options": ["Seçenek 1", "Seçenek 2", "Seçenek 3", "Seçenek 4"],
-            "correctAnswer": "Doğru Seçenek Metni",
-            "explanation": "Öğrenci yanlış cevapladığında ona hatasını anlatan, cesaret verici ve tatlı bir açıklama."
-        }
-    ]
-    DİKKAT: correctAnswer alanı SADECE DOĞRU ŞIKKIN METNİYLE BİREBİR AYNI olmalıdır (Örneğin "Seçenek 2"). Toplam 10 obje üret.`;
+    Öğrencin ${grade}. sınıf öğrencisi. Konu: "${topicName}".
+    Bana SADECE geçerli bir JSON array döndür. Kod bloğu KULLANMA.
+    Bu konuyla ilgili tam 10 tane, çocukların seviyesine uygun çoktan seçmeli matematik test sorusu hazırla.
+    
+    JSON yapısı tam olarak şöyle olmalı (dizi içinde 10 obje):
+    [
+        {
+            "text": "Soru 1 metni",
+            "options": ["Seçenek 1", "Seçenek 2", "Seçenek 3", "Seçenek 4"],
+            "correctAnswer": "Doğru Seçenek Metni",
+            "explanation": "Öğrenci yanlış cevapladığında ona hatasını anlatan, cesaret verici ve tatlı bir açıklama."
+        }
+    ]
+    DİKKAT: correctAnswer alanı SADECE DOĞRU ŞIKKIN METNİYLE BİREBİR AYNI olmalıdır (Örneğin "Seçenek 2"). "A", "B" gibi harf koyma, options dizisinden doğru olanı aynen yaz. Toplam 10 obje üret.`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: {
-                    response_mime_type: "application/json"
-                }
-            })
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
         });
 
         const result = await response.json();
-        if (!response.ok || result.error) {
-            console.error("API Hatası:", result.error);
-            return null;
-        }
+        if (!response.ok || result.error) return null;
 
         let aiText = result.candidates[0].content.parts[0].text;
+        aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
+        const firstBracket = aiText.indexOf('[');
+        const lastBracket = aiText.lastIndexOf(']');
+
+        if (firstBracket !== -1 && lastBracket !== -1) {
+            aiText = aiText.substring(firstBracket, lastBracket + 1);
+        }
+
         return JSON.parse(aiText);
     } catch (error) {
-        console.error("Bağlantı veya Parse Hatası:", error);
+        console.error("API Hatası:", error);
         return null;
     }
 }
@@ -123,37 +122,37 @@ const generateTopics = () => {
             card.style.display = 'none';
 
             card.className = `topic-card cursor-pointer p-6 rounded-3xl border-4 transition-all duration-300 transform hover:scale-105 shadow-lg flex flex-col justify-between min-h-[16rem] relative
-                ${isDone ? 'bg-green-50 border-green-400 shadow-green-100' : 'bg-white border-blue-200 shadow-blue-100'}`;
+                ${isDone ? 'bg-green-50 border-green-400 shadow-green-100' : 'bg-white border-blue-200 shadow-blue-100'}`;
 
             card.innerHTML = `
-                <div class="${isDone ? 'bg-green-500' : 'bg-blue-500'} text-white text-xs font-black px-3 py-1 rounded-full shadow-sm w-max mb-4">${grade}. Sınıf</div>
-                
-                <div class="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border-2 border-yellow-300 shadow-md absolute -top-4 -right-4 z-20 transform rotate-2">
-                     <span class="font-black ${isDone ? 'text-green-600' : 'text-yellow-600'} text-xs flex items-center">
-                         ${isDone ? '<i class="fa-solid fa-sparkles mr-1"></i> Kazanıldı' : '<i class="fa-solid fa-star fa-bounce text-yellow-500 mr-1"></i> 10 ⭐'}
-                     </span>
-                </div>
-                
-                <h3 class="text-xl font-black text-gray-800 leading-tight mb-2 flex-grow">${topicName}</h3>
-                
-                <p class="text-xs font-bold ${isDone ? 'text-green-600' : 'text-blue-500'} mb-5 flex items-start">
-                    ${isDone
+                <div class="${isDone ? 'bg-green-500' : 'bg-blue-500'} text-white text-xs font-black px-3 py-1 rounded-full shadow-sm w-max mb-4">${grade}. Sınıf</div>
+                
+                <div class="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border-2 border-yellow-300 shadow-md absolute -top-4 -right-4 z-20 transform rotate-2">
+                     <span class="font-black ${isDone ? 'text-green-600' : 'text-yellow-600'} text-xs flex items-center">
+                         ${isDone ? '<i class="fa-solid fa-sparkles mr-1"></i> Kazanıldı' : '<i class="fa-solid fa-star fa-bounce text-yellow-500 mr-1"></i> 10 ⭐'}
+                     </span>
+                </div>
+                
+                <h3 class="text-xl font-black text-gray-800 leading-tight mb-2 flex-grow">${topicName}</h3>
+                
+                <p class="text-xs font-bold ${isDone ? 'text-green-600' : 'text-blue-500'} mb-5 flex items-start">
+                    ${isDone
                     ? '<i class="fa-solid fa-circle-check mt-0.5 mr-2 text-green-500"></i> Alıştırmayı başarıyla tamamladın!'
                     : `<i class="fa-solid fa-sparkles mt-0.5 mr-2"></i> ${topicName} ${funSentence}`
                 }
-                </p>
-                
-                <div class="mt-auto">
-                    <div class="flex items-center justify-between border-t ${isDone ? 'border-green-200' : 'border-blue-50'} pt-4">
-                        <span class="text-xs font-black ${isDone ? 'text-green-600' : 'text-blue-500'} uppercase">
-                            ${isDone ? 'TEKRAR ÇÖZ' : 'TESTE BAŞLA'}
-                        </span>
-                        <div class="h-10 w-10 flex items-center justify-center rounded-full ${isDone ? 'bg-green-500' : 'bg-blue-500'} text-white shadow-md transition-transform hover:rotate-12">
-                            <i class="fa-solid ${isDone ? 'fa-pen' : 'fa-play'} text-sm"></i>
-                        </div>
-                    </div>
-                </div>
-            `;
+                </p>
+                
+                <div class="mt-auto">
+                    <div class="flex items-center justify-between border-t ${isDone ? 'border-green-200' : 'border-blue-50'} pt-4">
+                        <span class="text-xs font-black ${isDone ? 'text-green-600' : 'text-blue-500'} uppercase">
+                            ${isDone ? 'TEKRAR ÇÖZ' : 'TESTE BAŞLA'}
+                        </span>
+                        <div class="h-10 w-10 flex items-center justify-center rounded-full ${isDone ? 'bg-green-500' : 'bg-blue-500'} text-white shadow-md transition-transform hover:rotate-12">
+                            <i class="fa-solid ${isDone ? 'fa-pen' : 'fa-play'} text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
 
             card.onclick = () => startLesson(topicId, topicName, grade);
             grid.appendChild(card);
@@ -174,7 +173,7 @@ const renderQuestion = () => {
         const isSelected = userAnswers[currentQuestionIndex] === opt;
 
         btn.className = `w-full text-left p-4 rounded-2xl border-4 font-black text-lg transition-all transform hover:scale-105
-            ${isSelected ? 'bg-blue-100 border-blue-500 text-blue-800 scale-105' : 'bg-white border-blue-100 text-gray-700 hover:border-blue-300'}`;
+            ${isSelected ? 'bg-blue-100 border-blue-500 text-blue-800 scale-105' : 'bg-white border-blue-100 text-gray-700 hover:border-blue-300'}`;
 
         btn.innerHTML = `<span class="bg-blue-50 text-blue-500 w-8 h-8 rounded-full inline-flex items-center justify-center mr-3 font-bold">${['A', 'B', 'C', 'D'][idx]}</span> ${opt}`;
 
@@ -217,23 +216,23 @@ const showQuizResult = () => {
         } else {
             const uAnswer = userAnswers[i] !== null ? userAnswers[i] : "Boş";
             feedbackHTML += `
-                <div class="bg-red-50 border-l-[10px] border-red-400 p-4 rounded-2xl mb-4 text-left shadow-sm">
-                    <p class="font-black text-gray-800 text-lg mb-2 flex items-start">
-                        <i class="fa-solid fa-circle-xmark text-red-500 mr-2 mt-1"></i> ${i + 1}. Soru: ${q.text}
-                    </p>
-                    <div class="flex flex-col md:flex-row gap-3 mb-3 text-sm">
-                        <div class="bg-white px-3 py-2 rounded-xl border-2 border-red-100 font-bold text-gray-500 flex-1">
-                            Senin Cevabın: <span class="line-through text-red-400 ml-1">${uAnswer}</span>
-                        </div>
-                        <div class="bg-green-50 px-3 py-2 rounded-xl border-2 border-green-200 font-bold text-gray-600 flex-1">
-                            Doğru Cevap: <span class="text-green-600 font-black ml-1">${q.correctAnswer}</span>
-                        </div>
-                    </div>
-                    <div class="bg-blue-50 p-3 rounded-xl border-2 border-blue-100 italic text-blue-700 text-sm font-bold">
-                        <i class="fa-solid fa-lightbulb text-yellow-500 mr-1"></i> ${q.explanation}
-                    </div>
-                </div>
-            `;
+                <div class="bg-red-50 border-l-[10px] border-red-400 p-4 rounded-2xl mb-4 text-left shadow-sm">
+                    <p class="font-black text-gray-800 text-lg mb-2 flex items-start">
+                        <i class="fa-solid fa-circle-xmark text-red-500 mr-2 mt-1"></i> ${i + 1}. Soru: ${q.text}
+                    </p>
+                    <div class="flex flex-col md:flex-row gap-3 mb-3 text-sm">
+                        <div class="bg-white px-3 py-2 rounded-xl border-2 border-red-100 font-bold text-gray-500 flex-1">
+                            Senin Cevabın: <span class="line-through text-red-400 ml-1">${uAnswer}</span>
+                        </div>
+                        <div class="bg-green-50 px-3 py-2 rounded-xl border-2 border-green-200 font-bold text-gray-600 flex-1">
+                            Doğru Cevap: <span class="text-green-600 font-black ml-1">${q.correctAnswer}</span>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-xl border-2 border-blue-100 italic text-blue-700 text-sm font-bold">
+                        <i class="fa-solid fa-lightbulb text-yellow-500 mr-1"></i> ${q.explanation}
+                    </div>
+                </div>
+            `;
         }
     });
 
@@ -252,13 +251,13 @@ const showQuizResult = () => {
         // BARAJI GEÇTİ
         isQuizPassed = true;
         resultContainer.innerHTML = `
-            <i class="fa-solid fa-trophy text-[6rem] text-yellow-400 mb-4 drop-shadow-md animate-bounce"></i>
-            <h3 class="text-4xl font-black text-green-500 mb-2 mt-2">Harika İş Çıkardın!</h3>
-            <p class="text-xl text-gray-600 font-bold mb-4 bg-green-50 px-6 py-2 rounded-full border-2 border-green-200">
-                Sınavı <span class="text-green-600 font-black">${score}/10</span> doğru ile bitirdin.
-            </p>
-            ${feedbackHTML ? `<div class="w-full max-w-2xl mt-4"><h4 class="text-left font-black text-gray-600 mb-3 border-b-2 pb-2">Gözden Kaçanlar:</h4>${feedbackHTML}</div>` : ''}
-        `;
+            <i class="fa-solid fa-trophy text-[6rem] text-yellow-400 mb-4 drop-shadow-md animate-bounce"></i>
+            <h3 class="text-4xl font-black text-green-500 mb-2 mt-2">Harika İş Çıkardın!</h3>
+            <p class="text-xl text-gray-600 font-bold mb-4 bg-green-50 px-6 py-2 rounded-full border-2 border-green-200">
+                Sınavı <span class="text-green-600 font-black">${score}/10</span> doğru ile bitirdin.
+            </p>
+            ${feedbackHTML ? `<div class="w-full max-w-2xl mt-4"><h4 class="text-left font-black text-gray-600 mb-3 border-b-2 pb-2">Gözden Kaçanlar:</h4>${feedbackHTML}</div>` : ''}
+        `;
         finishBtn.innerHTML = `<i class="fa-solid fa-star"></i> Yıldızları Al ve Kapat`;
         finishBtn.classList.replace('bg-red-500', 'bg-green-500');
         finishBtn.classList.replace('hover:bg-red-600', 'hover:bg-green-600');
@@ -270,13 +269,13 @@ const showQuizResult = () => {
         // BARAJI GEÇEMEDİ
         isQuizPassed = false;
         resultContainer.innerHTML = `
-            <i class="fa-solid fa-face-frown text-[6rem] text-blue-400 mb-4 drop-shadow-md"></i>
-            <h3 class="text-4xl font-black text-blue-500 mb-2 mt-2">Biraz Daha Pratik!</h3>
-            <p class="text-xl text-gray-600 font-bold mb-4 bg-blue-50 px-6 py-2 rounded-full border-2 border-blue-200">
-                Başarılı olmak için <span class="text-red-500 font-black">8 doğru</span> yapmalısın. Sen <span class="text-red-500 font-black">${score}</span> doğru yaptın.
-            </p>
-            <div class="w-full max-w-2xl mt-4"><h4 class="text-left font-black text-red-500 mb-3 border-b-2 border-red-200 pb-2">Hatalarına Göz At:</h4>${feedbackHTML}</div>
-        `;
+            <i class="fa-solid fa-face-frown text-[6rem] text-blue-400 mb-4 drop-shadow-md"></i>
+            <h3 class="text-4xl font-black text-blue-500 mb-2 mt-2">Biraz Daha Pratik!</h3>
+            <p class="text-xl text-gray-600 font-bold mb-4 bg-blue-50 px-6 py-2 rounded-full border-2 border-blue-200">
+                Başarılı olmak için <span class="text-red-500 font-black">8 doğru</span> yapmalısın. Sen <span class="text-red-500 font-black">${score}</span> doğru yaptın.
+            </p>
+            <div class="w-full max-w-2xl mt-4"><h4 class="text-left font-black text-red-500 mb-3 border-b-2 border-red-200 pb-2">Hatalarına Göz At:</h4>${feedbackHTML}</div>
+        `;
         finishBtn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Tekrar Dene`;
 
         // CSS Sınıflarını Geriye Döndür / Ayarla
@@ -320,16 +319,16 @@ window.startLesson = async (id, name, grade) => {
         oldSymbols.forEach(el => el.remove());
 
         const symbolsHTML = `
-            <div class="magic-bg-symbols fixed inset-0 pointer-events-none z-0 overflow-hidden">
-                <i class="magic-symbol fa-solid fa-plus text-7xl text-blue-300 opacity-60" style="top: 10%; left: 5%; animation-duration: 12s;"></i>
-                <i class="magic-symbol fa-solid fa-minus text-6xl text-purple-300 opacity-60" style="top: 50%; left: 8%; animation-duration: 15s;"></i>
-                <i class="magic-symbol fa-solid fa-xmark text-8xl text-green-300 opacity-50" style="bottom: 10%; left: 15%; animation-duration: 10s;"></i>
-                <i class="magic-symbol fa-solid fa-divide text-[8rem] text-pink-300 opacity-40" style="top: 15%; right: 5%; animation-duration: 14s;"></i>
-                <i class="magic-symbol fa-solid fa-equals text-7xl text-yellow-300 opacity-70" style="bottom: 20%; right: 10%; animation-duration: 11s;"></i>
-                <i class="magic-symbol fa-solid fa-shapes text-[6rem] text-blue-200 opacity-50" style="top: 70%; right: 2%; animation-duration: 16s;"></i>
-                <i class="magic-symbol fa-solid fa-star text-5xl text-yellow-400 opacity-80" style="top: 5%; right: 40%; animation-duration: 9s;"></i>
-            </div>
-        `;
+            <div class="magic-bg-symbols fixed inset-0 pointer-events-none z-0 overflow-hidden">
+                <i class="magic-symbol fa-solid fa-plus text-7xl text-blue-300 opacity-60" style="top: 10%; left: 5%; animation-duration: 12s;"></i>
+                <i class="magic-symbol fa-solid fa-minus text-6xl text-purple-300 opacity-60" style="top: 50%; left: 8%; animation-duration: 15s;"></i>
+                <i class="magic-symbol fa-solid fa-xmark text-8xl text-green-300 opacity-50" style="bottom: 10%; left: 15%; animation-duration: 10s;"></i>
+                <i class="magic-symbol fa-solid fa-divide text-[8rem] text-pink-300 opacity-40" style="top: 15%; right: 5%; animation-duration: 14s;"></i>
+                <i class="magic-symbol fa-solid fa-equals text-7xl text-yellow-300 opacity-70" style="bottom: 20%; right: 10%; animation-duration: 11s;"></i>
+                <i class="magic-symbol fa-solid fa-shapes text-[6rem] text-blue-200 opacity-50" style="top: 70%; right: 2%; animation-duration: 16s;"></i>
+                <i class="magic-symbol fa-solid fa-star text-5xl text-yellow-400 opacity-80" style="top: 5%; right: 40%; animation-duration: 9s;"></i>
+            </div>
+        `;
         modal.insertAdjacentHTML('afterbegin', symbolsHTML);
     }
 
