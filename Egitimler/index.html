@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eğitimler - Matematik Adası</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastelPink: '#fdf2f8',
+                        deepPink: '#db2777',
+                        cardPink: '#fbcfe8',
+                    }
+                }
+            }
+        }
+    </script>
+    <script type="module" src="script.js"></script>
+</head>
+
+<body class="bg-pastelPink text-gray-800 overflow-x-hidden min-h-screen flex flex-col font-['Nunito']">
+
+    <nav class="navbar relative z-50 bg-white/90 flex justify-between items-center py-4 px-8 shadow-sm">
+        <div class="logo font-black text-pink-600 text-2xl">🔢 MATEMATİK<span>ADASI</span></div>
+
+        <div class="nav-links">
+            <a href="../index.html"
+                class="text-gray-500 border-2 border-gray-200 bg-white px-5 py-2 rounded-full font-bold text-lg flex items-center transition-all duration-300 transform hover:scale-105 hover:border-pink-400 hover:text-pink-600 hover:bg-pink-50 shadow-sm hover:shadow-md">
+                <i class="fa-solid fa-house mr-2"></i> Ana Sayfaya Dön
+            </a>
+        </div>
+
+        <div class="user-profile flex items-center gap-4">
+            <div id="login-btn"
+                class="hidden cursor-pointer bg-pink-500 text-white font-black py-2 px-6 rounded-full hover:bg-pink-600 transition">
+                <i class="fa-solid fa-user-circle mr-2"></i> Giriş Yap
+            </div>
+            
+            <div id="user-info" style="display: none; cursor: pointer;" onclick="openProfileModal()"
+                class="flex items-center gap-3 bg-white border-2 border-pink-200 p-1.5 pl-5 rounded-full shadow-sm hover:shadow-md hover:border-pink-300 transition-all duration-300 group">
+                
+                <div class="flex items-center gap-3">
+                    <div class="bg-yellow-50 px-3 py-1 rounded-full border border-yellow-200 shadow-inner flex items-center">
+                        <span id="user-total-score" class="font-black text-yellow-600 text-sm leading-none">0 ⭐</span>
+                    </div>
+                    
+                    <span id="user-name" class="font-bold text-gray-700 text-sm leading-none group-hover:text-pink-600 transition-colors">Öğrenci</span>
+                    
+                    <div class="h-4 w-[2px] bg-pink-200 rounded-full hidden sm:block"></div>
+                    
+                    <span id="user-title" class="text-sm text-pink-500 font-black leading-none hidden sm:block">Çırak Büyücü 🪄</span>
+                </div>
+                
+                <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center border-2 border-pink-400 overflow-hidden shrink-0 ml-1">
+                    <img id="user-pic" src="" alt="Avatar" class="w-full h-full object-cover">
+                </div>
+            </div>
+            </div>
+    </nav>
+
+    <header class="hero relative z-40 overflow-hidden"
+        style="height: 40vh; background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%); clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);">
+        <div class="hero-content mt-10 text-center flex flex-col items-center justify-center h-full pb-10">
+            <h1 class="text-6xl text-white font-black drop-shadow-md mb-4 tracking-wide">
+                <i class="fa-solid fa-book-open text-pink-100 opacity-80 mr-4"></i>EĞİTİM KİTAPLIĞI
+            </h1>
+            <h2 class="text-xl text-pink-50 font-bold max-w-2xl mx-auto drop-shadow-sm">
+                Rengarenk matematik dünyasında yepyeni konular keşfetmeye ve öğrenmeye başla!
+            </h2>
+        </div>
+    </header>
+
+    <section class="relative z-40 -mt-8 mb-16">
+        <div class="container mx-auto px-4 flex flex-wrap justify-center gap-4">
+            <button onclick="filterGrade('1')" id="btn-1"
+                class="filter-btn active-filter bg-white text-pink-600 border-4 border-pink-300 font-black text-lg py-2 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1">
+                1. Sınıf
+            </button>
+            <button onclick="filterGrade('2')" id="btn-2"
+                class="filter-btn bg-white text-gray-400 border-4 border-gray-100 font-black text-lg py-2 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 hover:border-pink-200 hover:text-pink-400">
+                2. Sınıf
+            </button>
+            <button onclick="filterGrade('3')" id="btn-3"
+                class="filter-btn bg-white text-gray-400 border-4 border-gray-100 font-black text-lg py-2 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 hover:border-pink-200 hover:text-pink-400">
+                3. Sınıf
+            </button>
+            <button onclick="filterGrade('4')" id="btn-4"
+                class="filter-btn bg-white text-gray-400 border-4 border-gray-100 font-black text-lg py-2 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 hover:border-pink-200 hover:text-pink-400">
+                4. Sınıf
+            </button>
+        </div>
+    </section>
+
+    <section class="flex-grow pb-20">
+        <div class="container mx-auto px-4">
+            
+            <div id="progress-container" class="max-w-6xl mx-auto mb-10 bg-white p-6 rounded-[2rem] shadow-sm border-4 border-pink-100 hidden relative overflow-hidden">
+                <div class="absolute -right-8 -top-8 text-pink-50 opacity-60 text-8xl pointer-events-none">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex justify-between items-end mb-3">
+                        <span id="progress-text" class="font-black text-gray-700 text-xl">1. Sınıf İlerlemen</span>
+                        <span id="progress-percent" class="font-black text-green-500 text-2xl">%0</span>
+                    </div>
+                    <div class="w-full bg-pink-50 rounded-full h-5 overflow-hidden border-2 border-pink-100">
+                        <div id="progress-bar" class="bg-gradient-to-r from-green-400 to-emerald-500 h-5 rounded-full transition-all duration-1000 w-0 relative animate-stripes">
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            </div>
+
+            <div id="no-content-msg" class="hidden text-center py-20">
+                <i class="fa-solid fa-magnifying-glass text-6xl text-pink-300 mb-4"></i>
+                <h3 class="text-2xl font-black text-gray-600">Burada henüz ders yok!</h3>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-8 text-center text-pink-800 font-bold border-t-4 border-pink-200 mt-auto">
+        <p>&copy; 2026 Matematik Adası - Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <div id="profile-modal"
+        class="modal z-[9000] hidden fixed inset-0 bg-black/50 backdrop-blur-sm justify-center items-center">
+        <div
+            class="modal-content profile-content bg-white rounded-3xl p-8 relative max-w-sm w-full shadow-2xl border-4 border-pink-400 modal-animate">
+            <span class="close-btn text-gray-400 hover:text-pink-600 absolute right-6 top-4 text-3xl cursor-pointer"
+                onclick="closeProfileModal()">&times;</span>
+            <div class="profile-header flex flex-col items-center border-b border-pink-100 pb-6">
+                <img id="modal-user-pic" src="" alt="Avatar"
+                    class="w-24 h-24 rounded-full border-4 border-pink-400 shadow-lg mb-4 object-cover">
+                <h2 id="modal-user-name" class="text-2xl font-black text-gray-800">Öğrenci Adı</h2>
+                
+                <p id="modal-user-title" class="text-lg text-pink-500 font-black mt-1 mb-2">Çırak Büyücü 🪄</p>
+
+                <p class="text-pink-600 font-bold bg-blue-100 px-4 py-1 rounded-full mt-2 text-sm"><i
+                        class="fa-solid fa-school"></i> Sınıf: <span id="modal-user-grade">-</span></p>
+                <div class="mt-4 text-yellow-500 font-black text-3xl"><span id="modal-score">0</span> ⭐</div>
+            </div>
+            <button id="modal-logout-btn"
+                class="mt-8 w-full bg-red-400 hover:bg-red-500 text-white font-black py-3 rounded-xl transition shadow-lg">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i> ÇIKIŞ YAP
+            </button>
+        </div>
+    </div>
+
+    <div id="lesson-modal"
+        class="modal z-[9999] hidden fixed inset-0 bg-black/60 backdrop-blur-md justify-center items-center p-4">
+        <div
+            class="modal-content bg-white rounded-[2rem] p-8 relative max-w-4xl w-full h-[80vh] flex flex-col shadow-2xl border-4 border-pink-400 modal-animate">
+
+            <span
+                class="close-btn text-gray-400 hover:text-pink-600 absolute right-6 top-6 text-4xl cursor-pointer transition transform hover:scale-110 z-20"
+                onclick="closeLessonModal()">&times;</span>
+
+            <div class="lesson-header border-b-4 border-pink-100 pb-4 mb-6 flex items-center justify-between pr-10 z-20">
+                <h2 class="text-3xl font-black text-gray-800 flex items-center gap-4">
+                    <div class="bg-pink-100 p-3 rounded-2xl text-pink-500">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <span id="lesson-name-display">Konu Adı Gelecek</span>
+                </h2>
+                <div
+                    class="bg-yellow-100 text-yellow-600 font-black px-4 py-2 rounded-2xl text-sm flex items-center gap-2 border-2 border-yellow-200">
+                    <i class="fa-solid fa-star"></i> Ödül: 10 ⭐
+                </div>
+            </div>
+
+            <div id="lesson-content"
+                class="flex-grow bg-pink-50/50 rounded-3xl border-4 border-dashed border-pink-200 flex flex-col items-center justify-center mb-6 relative overflow-hidden hide-scrollbar">
+            </div>
+
+            <div class="lesson-footer flex justify-end gap-4 mt-auto z-20">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

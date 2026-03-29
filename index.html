@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematik Adası - Eğlenceli Öğrenme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        @media (max-width: 1366px) {
+            html {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            html {
+                font-size: 13px;
+            }
+        }
+
+        body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px !important;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .card-image .bg-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-size: cover !important;
+            background-position: center !important;
+        }
+
+        /* Karakter Seçici İçin Özel CSS */
+        .avatar-option {
+            width: 65px;
+            height: 65px;
+            border-width: 3px;
+            border-color: #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            background-color: white;
+            border-radius: 9999px;
+            object-fit: contain;
+            padding: 4px;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.15) translateY(-5px);
+            border-color: #c084fc;
+            box-shadow: 0 10px 15px -3px rgba(192, 132, 252, 0.3);
+        }
+
+        .avatar-option.selected {
+            border-color: #a855f7;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+            transform: scale(1.1);
+            background-color: #faf5ff;
+        }
+
+        /* Profil Menüsündeki Karakter Seçici */
+        .profile-avatar-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 9999px;
+            border-width: 3px;
+            border-color: transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            object-fit: contain;
+            background-color: white;
+            padding: 3px;
+        }
+
+        .profile-avatar-option:hover {
+            border-color: #a855f7;
+            transform: scale(1.1);
+            background-color: #faf5ff;
+        }
+    </style>
+</head>
+
+<body class="text-gray-800 overflow-x-hidden">
+
+    <nav class="navbar relative z-50">
+        <div class="logo">🔢 MATEMATİK<span>ADASI</span></div>
+
+        <div class="nav-links">
+            <a href="#kategoriler" class="active">Eğitimler & Başarılarım</a>
+            <a href="#afacanlar">Haftanın Süper Kahramanları</a>
+            <a href="#hakkimizda">Hakkımızda</a>
+        </div>
+
+        <div class="user-profile" style="align-items: center;">
+            <div id="login-btn">
+                <i class="fa-solid fa-user-circle"></i> Giriş Yap
+            </div>
+
+            <div id="user-info" style="display: none; cursor: pointer; align-items: center; gap: 8px;"
+                onclick="openProfileModal()">
+                <span id="user-total-score" class="score-badge">0 ⭐</span>
+                <button id="shop-btn" onclick="openShop(event)" style="display: flex; align-items: center; gap: 4px;">
+                    <i class="fa-solid fa-gift"></i> ÖDÜLLER
+                </button>
+                <img id="user-pic" src="" alt="Süper Kahraman"
+                    class="w-12 h-12 rounded-full border-4 border-purple-200 bg-white shadow-md object-contain p-1">
+                <span id="user-name" class="font-bold text-gray-800"></span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero relative z-40">
+        <div class="hero-content">
+            <h1>SAYILARIN RENKLİ DÜNYASI!</h1>
+            <h2>Matematik hiç bu kadar eğlenceli olmamıştı. Topla, çıkar, çarp, böl ve haftanın en çalışkan afacanı sen
+                ol!</h2>
+            <br>
+            <a href="#kategoriler" class="cta-button">ÖĞRENMEYE BAŞLA</a>
+        </div>
+    </header>
+
+    <div class="news-ticker w-full relative z-50">
+        <div class="marquee-wrapper relative z-10">
+            <div class="marquee-content flex items-center px-4" id="ticker-1">
+                <span class="text-purple-800 font-black text-lg tracking-widest uppercase">🚀 HARİKA İŞLER
+                    BAŞARABİLİRSİN! 🚀 KENDİNE GÜVEN! 🚀 MATEMATİK SENİN SÜPER GÜCÜN! 🚀 HATALAR ÖĞRENMENİN EN GÜZEL
+                    YOLUDUR! 🚀</span>
+            </div>
+        </div>
+    </div>
+
+    <section id="kategoriler" class="relative z-40 pt-20 pb-40" style="background-color: #e9d5ff;">
+        <div class="container relative z-20">
+            <h2 class="section-title">
+                <i class="fa-solid fa-shapes text-purple-600"></i>
+                <span class="text-purple-700">MATEMATİK ADASI</span>
+            </h2>
+
+            <div class="grid">
+                <div class="game-card card-pink reveal" onclick="window.location.href='Egitimler/index.html'">
+                    <div class="card-image" style="height: 260px;">
+                        <div class="bg-img" style="background-image: url('assets/egitimler_resmi.png');">
+                        </div>
+                        <span class="badge bg-pink-500 text-white">Konu Anlatımı</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>Eğitimler</h3>
+                        <p>Matematiğin temellerini renkli animasyonlar ve eğlenceli anlatımlarla adım adım öğren!</p>
+                        <div class="play-btn">EĞİTİMLERE GİT</div>
+                    </div>
+                </div>
+
+                <div class="game-card card-blue reveal" onclick="window.location.href='Alıştırmalar/index.html'">
+                    <div class="card-image" style="height: 260px;">
+                        <div class="bg-img" style="background-image: url('assets/alistirmalar_resmi.png');">
+                        </div>
+                        <span class="badge bg-blue-500 text-white">Soru Çözümü</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>Alıştırmalar</h3>
+                        <p>Öğrendiğin konuları pekiştir. Bol bol pratik yap, kendini test et ve yıldızları topla!</p>
+                        <div class="play-btn">ALIŞTIRMALARA GİT</div>
+                    </div>
+                </div>
+
+                <div class="game-card card-purple reveal" onclick="window.openAchievementsModal()">
+                    <div class="card-image" style="height: 260px;">
+                        <div class="bg-img" style="background-image: url('assets/kupa_resmi.png');">
+                        </div>
+                        <span class="badge bg-purple-600 text-white shadow-md">Rozetler</span>
+                    </div>
+                    <div class="card-info">
+                        <h3>Başarılarım</h3>
+                        <p>Ne kadar harika bir öğrenci olduğunu takip et. Yeni hedeflere ulaş ve özel rozetlerin kilidini aç!</p>
+                        <div class="play-btn">BAŞARILARIMI GÖR</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sharp-divider z-0">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,120 L1200,0 L1200,120 Z" style="fill: #bfdbfe;"></path>
+            </svg>
+        </div>
+    </section>
+
+    <section id="afacanlar" class="relative z-40 pt-20 pb-40" style="background-color: #bfdbfe;">
+        <div class="container relative z-20">
+            <h2 class="section-title">
+                <i class="fa-solid fa-crown text-yellow-500"></i>
+                <span class="text-blue-800 drop-shadow-sm">HAFTANIN SÜPER KAHRAMANLARI</span>
+            </h2>
+
+            <div class="leaderboard-wrapper flex justify-center items-end gap-4" id="leaderboard-wrapper">
+                <p style="text-align:center; color:#1e3a8a; font-weight: bold; width: 100%;">Tablo Yükleniyor... ⏳</p>
+            </div>
+
+            <div class="leaderboard-list mt-8 max-w-3xl mx-auto" id="leaderboard-list">
+            </div>
+        </div>
+
+        <div class="sharp-divider z-0">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M1200,120 L0,0 L0,120 Z" style="fill: #fbcfe8;"></path>
+            </svg>
+        </div>
+    </section>
+
+    <section id="hakkimizda" class="relative z-40 pt-20" style="background-color: #fbcfe8;">
+        <div class="container about-container pb-20">
+            <div class="about-text">
+                <h2 class="section-title text-pink-600" style="justify-content: flex-start;">HAKKIMIZDA</h2>
+                <p class="text-pink-900 text-lg leading-relaxed mb-6 font-semibold">
+                    Merhaba! Biz, sağlık sorunları, özel gereksinimler ya da farklı nedenlerle okuldan uzak kalmak
+                    zorunda olan ilkokul öğrencilerinin matematikten kopmaması gerektiğine inanıyoruz. <strong>Matematik
+                        Adası</strong>’nı, bu öğrencilerin okul ortamında bulunamamanın oluşturduğu dezavantajı daha
+                    güvenli, sıcak ve motive edici bir öğrenme deneyimine dönüştürmek için tasarlıyoruz. Amacımız;
+                    çocukların matematiği kendi hızlarında, korkmadan ve eğlenerek öğrenebileceği, konu anlatımları,
+                    oyunlaştırılmış etkinlikler, destekleyici karakterler ve seviyeye uygun içeriklerle
+                    zenginleştirilmiş erişilebilir bir dijital öğrenme alanı sunmak.
+                </p>
+                <div class="about-points flex flex-col gap-4">
+                    <div class="point-item flex items-start">
+                        <span class="dot bg-pink-600 w-3 h-3 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <p class="text-pink-900 font-bold"><strong>Eğlenceli Öğrenme:</strong> Konu anlatımları, mini
+                            alıştırmalar ve oyunlaştırılmış matematik etkinlikleri.</p>
+                    </div>
+                    <div class="point-item flex items-start">
+                        <span class="dot bg-purple-600 w-3 h-3 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <p class="text-pink-900 font-bold"><strong>Destekleyici Deneyim:</strong> Çocukları motive eden
+                            içerikler, cesaret verici mesajlar ve gelişimi adım adım takip edebilen bir yapı.</p>
+                    </div>
+                    <div class="point-item flex items-start">
+                        <span class="dot bg-blue-600 w-3 h-3 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        <p class="text-pink-900 font-bold"><strong>Kişiselleştirilmiş Yapı:</strong> Öğrencinin sınıf
+                            düzeyine ve seçtiği konuya uygun içerikler sunan sistem.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1000"
+                    alt="Mutlu Öğrenen Çocuklar" class="rounded-3xl shadow-xl border-4 border-white">
+            </div>
+        </div>
+
+        <footer class="py-8 text-center text-pink-800 font-bold border-t border-pink-300">
+            <p>&copy; 2026 Matematik Adası - Tüm Hakları Saklıdır.</p>
+        </footer>
+    </section>
+
+    <div id="custom-login-modal"
+        class="modal z-[9999] hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center px-4">
+        <div
+            class="bg-white p-8 rounded-3xl shadow-2xl max-w-lg w-full text-center relative border-4 border-purple-400 modal-animate">
+            <span
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 cursor-pointer text-3xl font-black transition"
+                onclick="closeLoginModal()">&times;</span>
+
+            <div class="text-5xl mb-4 animate-bounce">🏝️</div>
+            <h2 class="text-3xl font-black text-purple-500 mb-4">Adaya Giriş Yap!</h2>
+
+            <p class="text-gray-600 font-bold mb-3 text-left px-1 text-sm">Süper Kahramanını Seç:</p>
+
+            <div class="grid grid-cols-5 gap-2 mb-6 bg-purple-50 p-4 rounded-2xl border-2 border-purple-100">
+                <img src="https://img.icons8.com/color/96/spiderman-head.png" alt="Spiderman"
+                    class="avatar-option selected"
+                    onclick="selectAvatar(this, 'https://img.icons8.com/color/96/spiderman-head.png')">
+                <img src="https://img.icons8.com/color/96/batman.png" alt="Batman" class="avatar-option"
+                    onclick="selectAvatar(this, 'https://img.icons8.com/color/96/batman.png')">
+                <img src="https://img.icons8.com/color/96/iron-man.png" alt="Iron Man" class="avatar-option"
+                    onclick="selectAvatar(this, 'https://img.icons8.com/color/96/iron-man.png')">
+                <img src="https://img.icons8.com/color/96/wonder-woman.png" alt="Wonder Woman" class="avatar-option"
+                    onclick="selectAvatar(this, 'https://img.icons8.com/color/96/wonder-woman.png')">
+                <img src="https://img.icons8.com/color/96/catwoman.png" alt="Catwoman" class="avatar-option"
+                    onclick="selectAvatar(this, 'https://img.icons8.com/color/96/catwoman.png')">
+            </div>
+
+            <input type="text" id="login-isim" placeholder="Adın"
+                class="w-full mb-4 p-4 border-2 border-gray-200 rounded-2xl font-bold text-gray-700 focus:border-purple-400 outline-none transition text-lg">
+            <input type="text" id="login-soyad" placeholder="Soyadın"
+                class="w-full mb-4 p-4 border-2 border-gray-200 rounded-2xl font-bold text-gray-700 focus:border-purple-400 outline-none transition text-lg">
+            <select id="login-sinif"
+                class="w-full mb-6 p-4 border-2 border-gray-200 rounded-2xl font-bold text-gray-700 focus:border-purple-400 outline-none transition text-lg cursor-pointer">
+                <option value="">Sınıfını Seç 👇</option>
+                <option value="1. Sınıf">1. Sınıf</option>
+                <option value="2. Sınıf">2. Sınıf</option>
+                <option value="3. Sınıf">3. Sınıf</option>
+                <option value="4. Sınıf">4. Sınıf</option>
+            </select>
+            <button onclick="macerayaBasla(event)"
+                class="w-full bg-pink-400 hover:bg-pink-500 text-white font-black py-4 rounded-2xl shadow-[0_5px_15px_rgba(244,114,182,0.4)] transition transform hover:-translate-y-1 text-xl">MACERAYA
+                BAŞLA!</button>
+        </div>
+    </div>
+
+    <div id="welcome-modal"
+        class="modal z-[9999] hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center px-4">
+        <div id="welcome-modal-content"
+            class="bg-white p-8 rounded-3xl shadow-2xl max-sm w-full text-center relative border-4 border-green-400 modal-animate">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 id="welcome-title" class="text-2xl font-black text-green-500 mb-2">Tekrar Hoş Geldin!</h2>
+            <p id="welcome-desc" class="text-gray-600 font-bold mb-6">Kaldığın yerden maceraya devam edebilirsin.</p>
+
+            <div id="welcome-score-box" class="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-4 mb-6">
+                <p class="text-sm font-bold text-gray-500 mb-1">Mevcut Puanın:</p>
+                <p id="welcome-score" class="text-3xl font-black text-yellow-500">0 ⭐</p>
+            </div>
+
+            <button id="welcome-btn" onclick="closeWelcomeModal()"
+                class="w-full bg-green-400 hover:bg-green-500 text-white font-black py-4 rounded-2xl shadow-[0_5px_15px_rgba(74,222,128,0.4)] transition transform hover:-translate-y-1 text-xl">
+                DEVAM ET
+            </button>
+        </div>
+    </div>
+
+    <div id="profile-modal" class="modal z-[9000]">
+        <div
+            class="modal-content profile-content bg-white rounded-3xl p-8 relative max-w-sm w-full shadow-2xl border-4 border-blue-400">
+            <span class="close-btn text-gray-400 hover:text-gray-800 absolute right-6 top-4 text-3xl cursor-pointer"
+                onclick="closeProfileModal()">&times;</span>
+            <div class="profile-header flex flex-col items-center border-b border-gray-200 pb-4">
+                <img id="modal-user-pic" src="" alt="Avatar"
+                    class="w-32 h-32 rounded-full border-4 border-purple-300 shadow-lg mb-4 object-contain bg-white p-3">
+                <h2 id="modal-user-name" class="text-2xl font-black text-gray-800">Öğrenci Adı</h2>
+                <p class="text-purple-600 font-bold bg-purple-100 px-4 py-1 rounded-full mt-2 text-sm"><i
+                        class="fa-solid fa-school"></i> Sınıf: <span id="modal-user-grade">-</span></p>
+                <div class="mt-4 text-yellow-500 font-black text-3xl"><span id="modal-score">0</span> ⭐</div>
+            </div>
+
+            <div class="mt-5 text-center px-2">
+                <p class="text-sm font-bold text-gray-500 mb-3">Sıkıldın mı? Kahramanını Değiştir!</p>
+
+                <div class="grid grid-cols-5 gap-2 bg-gray-50 p-4 rounded-2xl border-2 border-gray-100">
+                    <img src="https://img.icons8.com/color/96/spiderman-head.png" alt="Spiderman"
+                        class="profile-avatar-option"
+                        onclick="changeAvatar('https://img.icons8.com/color/96/spiderman-head.png')">
+                    <img src="https://img.icons8.com/color/96/batman.png" alt="Batman" class="profile-avatar-option"
+                        onclick="changeAvatar('https://img.icons8.com/color/96/batman.png')">
+                    <img src="https://img.icons8.com/color/96/iron-man.png" alt="Iron Man" class="profile-avatar-option"
+                        onclick="changeAvatar('https://img.icons8.com/color/96/iron-man.png')">
+                    <img src="https://img.icons8.com/color/96/wonder-woman.png" alt="Wonder Woman"
+                        class="profile-avatar-option"
+                        onclick="changeAvatar('https://img.icons8.com/color/96/wonder-woman.png')">
+                    <img src="https://img.icons8.com/color/96/catwoman.png" alt="Catwoman" class="profile-avatar-option"
+                        onclick="changeAvatar('https://img.icons8.com/color/96/catwoman.png')">
+                </div>
+            </div>
+
+            <button id="modal-logout-btn"
+                class="mt-6 w-full bg-red-400 hover:bg-red-500 text-white font-black py-3 rounded-xl transition shadow-lg">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i> ÇIKIŞ YAP
+            </button>
+        </div>
+    </div>
+
+    <div id="shop-modal" onclick="if(event.target === this) closeShop()"
+        class="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm hidden flex-col items-center justify-center px-4 transition-opacity duration-300">
+        <div
+            class="bg-white border-4 border-yellow-400 p-8 rounded-3xl max-sm w-full text-center shadow-2xl relative modal-animate">
+            <span class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 cursor-pointer text-2xl transition"
+                onclick="closeShop()">&times;</span>
+            <div class="text-6xl mb-4 text-yellow-400"><i class="fa-solid fa-gift animate-bounce"></i></div>
+            <h2 class="text-3xl font-black mb-2 text-gray-800">ÖDÜL KUTUSU</h2>
+            <p class="text-gray-600 font-bold mb-6">Yıldızlarını topla ve sürpriz dijital rozetlerin kilidini aç! Çok
+                yakında burada olacak.</p>
+            <button onclick="closeShop()"
+                class="w-full bg-yellow-400 text-white font-black py-4 rounded-xl hover:bg-yellow-500 transition shadow-lg">ANLADIM</button>
+        </div>
+    </div>
+
+    <!-- BAŞARIMLAR MÖDÜLÜ -->
+    <div id="achievements-modal"
+        class="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-md hidden flex-col items-center justify-center p-4 transition-opacity duration-300">
+        <div class="bg-white border-4 border-purple-400 p-8 rounded-[2.5rem] w-full max-w-6xl max-h-[90vh] flex flex-col shadow-2xl relative modal-animate overflow-hidden">
+            <span class="absolute top-6 right-6 text-gray-400 hover:text-purple-600 cursor-pointer text-4xl transition transform hover:scale-110 z-20"
+                onclick="closeAchievementsModal()">&times;</span>
+            
+            <div class="text-center border-b-4 border-purple-100 pb-6 mb-6">
+                <img src="assets/kupa_resmi.png" alt="Madalya Kupa" class="w-32 h-32 mb-4 drop-shadow-md animate-bounce hover:animate-none hover:scale-110 transition-transform mx-auto">
+                <h2 class="text-4xl font-black text-purple-600 tracking-wide uppercase">Başarılarım</h2>
+                <p class="text-lg text-gray-500 font-bold mt-2">Rozetlerin kilidini açmak için çalışmaya devam et!</p>
+                <div class="w-full max-w-lg mx-auto mt-4 bg-gray-200 rounded-full h-5 relative overflow-hidden shadow-inner border border-gray-300">
+                    <div id="achievements-progress" class="bg-gradient-to-r from-purple-400 via-pink-500 to-yellow-400 h-5 rounded-full transition-all duration-1000 w-0 relative">
+                        <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                    </div>
+                </div>
+                <p id="achievements-count" class="text-sm font-black text-purple-600 mt-2 tracking-wide">0/10 Rozet Açıldı</p>
+            </div>
+
+            <div id="achievements-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto hide-scrollbar pb-6 px-2 pr-4 custom-scrollbar">
+                <!-- Başarılar JS ile doldurulacak -->
+            </div>
+            
+            <div class="mt-4 pt-4 border-t-4 border-purple-50 text-center">
+                <button onclick="closeAchievementsModal()" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-black py-4 px-12 rounded-2xl shadow-xl hover:-translate-y-1 text-2xl transform transition border-b-8 border-purple-700 active:border-b-0 active:translate-y-1">
+                    Harika! Kapat <i class="fa-solid fa-check ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.openProfileModal = () => { document.getElementById('profile-modal').style.display = 'flex'; };
+        window.closeProfileModal = () => { document.getElementById('profile-modal').style.display = 'none'; };
+        window.openShop = (e) => {
+            if (e) e.stopPropagation();
+            const shopModal = document.getElementById('shop-modal');
+            shopModal.classList.remove('hidden'); shopModal.classList.add('flex');
+        };
+        window.closeShop = () => {
+            const shopModal = document.getElementById('shop-modal');
+            shopModal.classList.add('hidden'); shopModal.classList.remove('flex');
+        };
+
+        const achievementsList = [
+            { id: 'first_step', title: 'İlk Adım!', desc: 'Matematik Adasına giriş yaptın ve maceraya başladın.', icon: 'fa-shoe-prints', condition: (u) => true, color: 'text-blue-500 bg-blue-50 border-blue-200' },
+            { id: 'first_lesson', title: 'Kitap Kurdu', desc: 'İlk eğitimini başarıyla tamamladın.', icon: 'fa-book-open', condition: (u) => (u.completedLessons && u.completedLessons.length > 0), color: 'text-green-500 bg-green-50 border-green-200' },
+            { id: 'first_exercise', title: 'Pratik Zeka', desc: 'İlk alıştırma testini çözdün.', icon: 'fa-brain', condition: (u) => (u.completedExercises && u.completedExercises.length > 0), color: 'text-pink-500 bg-pink-50 border-pink-200' },
+            { id: 'first_game', title: 'Oyunbaz', desc: 'İlk oyununu oynadın, eğlence başlasın!', icon: 'fa-gamepad', condition: (u) => (u.completedGames && u.completedGames.length > 0), color: 'text-indigo-500 bg-indigo-50 border-indigo-200' },
+            { id: 'apprentice', title: 'Çalışkan Arı', desc: 'Tam 5 farklı konu/test tamamladın.', icon: 'fa-bug', condition: (u) => { 
+                let count = (u.completedLessons ? u.completedLessons.length : 0) + (u.completedExercises ? u.completedExercises.length : 0);
+                return count >= 5; 
+            }, color: 'text-teal-500 bg-teal-50 border-teal-200' },
+            { id: 'master_student', title: 'Bilge Öğrenci', desc: '10 farklı konu/test tamamladın.', icon: 'fa-graduation-cap', condition: (u) => { 
+                let count = (u.completedLessons ? u.completedLessons.length : 0) + (u.completedExercises ? u.completedExercises.length : 0);
+                return count >= 10; 
+            }, color: 'text-cyan-500 bg-cyan-50 border-cyan-200' },
+            { id: 'star_hunter_50', title: 'Yıldız Işığı', desc: 'Süper başlangıç! 50 Yıldız Puanı.', icon: 'fa-star-half-stroke', condition: (u) => (u.score >= 50), color: 'text-yellow-500 bg-yellow-50 border-yellow-200' },
+            { id: 'star_hunter_1', title: 'Yıldız Avcısı', desc: 'Adayı fethettin, 100 Yıldız Puanı.', icon: 'fa-star', condition: (u) => (u.score >= 100), color: 'text-orange-500 bg-orange-50 border-orange-300' },
+            { id: 'legend', title: 'Zirve Efsanesi', desc: 'Harikasın! 300 Yıldız sınırını aştın!', icon: 'fa-crown', condition: (u) => (u.score >= 300), color: 'text-purple-500 bg-purple-50 border-purple-300' },
+            { id: 'ultra_legend', title: 'Galaksi Fatihi', desc: 'Süper Kahraman! 500 Yıldız Puanı!', icon: 'fa-rocket', condition: (u) => (u.score >= 500), color: 'text-red-500 bg-red-50 border-red-300' }
+        ];
+
+        window.openAchievementsModal = () => {
+            const userStr = localStorage.getItem('mathIslandUser');
+            if(!userStr) {
+                alert("Başarılarını görmek için önce giriş yapmalısın! 😊");
+                return;
+            }
+            
+            const user = JSON.parse(userStr);
+            const grid = document.getElementById('achievements-grid');
+            grid.innerHTML = '';
+            
+            let unlockedCount = 0;
+
+            achievementsList.forEach(ach => {
+                const isUnlocked = ach.condition(user);
+                if (isUnlocked) unlockedCount++;
+                
+                const card = document.createElement('div');
+                card.className = `group relative overflow-hidden flex items-center p-7 min-h-[130px] border-4 rounded-[2.5rem] transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-1 ${isUnlocked ? ach.color + ' shadow-[0_12px_24px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)]' : 'bg-gray-50 border-gray-200 opacity-60 grayscale hover:grayscale-[0.3] hover:opacity-90'}`;
+                
+                const shine = isUnlocked ? `<div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -translate-x-full group-hover:translate-x-full z-10 pointer-events-none"></div>` : '';
+
+                card.innerHTML = `
+                    ${shine}
+                    <div class="relative z-20 h-24 w-24 shrink-0 rounded-full flex justify-center items-center bg-white shadow-inner border-[5px] focus:outline-none ${isUnlocked ? 'border-current' : 'border-gray-300'} mr-6 group-hover:rotate-[15deg] transition-transform duration-300">
+                        <i class="fa-solid ${ach.icon} text-5xl ${isUnlocked ? '' : 'text-gray-400'} drop-shadow-md"></i>
+                    </div>
+                    <div class="relative z-20 flex-grow min-w-0 pr-4">
+                        <h4 class="text-2xl font-black ${isUnlocked ? 'currentcolor' : 'text-gray-500'} break-words whitespace-normal leading-tight">${ach.title}</h4>
+                        <p class="text-[0.95rem] font-bold ${isUnlocked ? 'text-gray-600' : 'text-gray-400'} mt-2 leading-relaxed break-words whitespace-normal h-auto min-h-[3rem] overflow-visible">${ach.desc}</p>
+                    </div>
+                    <div class="relative z-20 shrink-0 flex justify-center items-center w-14">
+                        ${isUnlocked ? '<i class="fa-solid fa-circle-check text-5xl opacity-90 text-green-500 drop-shadow-lg transform group-hover:scale-110 transition-transform"></i>' : '<i class="fa-solid fa-lock text-4xl text-gray-300"></i>'}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            const progressPercent = Math.round((unlockedCount / achievementsList.length) * 100);
+            const progressBar = document.getElementById('achievements-progress');
+            const progressText = document.getElementById('achievements-count');
+            
+            if (progressBar && progressText) {
+                setTimeout(() => {
+                    progressBar.style.width = `${progressPercent}%`;
+                }, 100);
+                progressText.innerText = `${unlockedCount} / ${achievementsList.length} Rozet Açıldı (%${progressPercent})`;
+            }
+
+            const modal = document.getElementById('achievements-modal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        };
+        
+        window.closeAchievementsModal = () => {
+            const modal = document.getElementById('achievements-modal');
+            modal.classList.add('hidden'); modal.classList.remove('flex');
+            
+            const progressBar = document.getElementById('achievements-progress');
+            if (progressBar) progressBar.style.width = '0%';
+        };
+
+        window.closeWelcomeModal = () => {
+            const modal = document.getElementById('welcome-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        const ticker = document.getElementById('ticker-1');
+        if (ticker) ticker.innerHTML += ticker.innerHTML + ticker.innerHTML;
+
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) { reveals[i].classList.add("active"); }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        window.addEventListener("load", reveal);
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC1kgtTx6sxxCsR0CN2HEMPwE9arxP6hC8",
+            authDomain: "matematik-e5154.firebaseapp.com",
+            projectId: "matematik-e5154",
+            storageBucket: "matematik-e5154.firebasestorage.app",
+            messagingSenderId: "1033433779853",
+            appId: "1:1033433779853:web:3c4702cfb76a0c240adcc4",
+            measurementId: "G-PW2F3WHG8K"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const loginBtn = document.getElementById('login-btn');
+        const userInfo = document.getElementById('user-info');
+        const userName = document.getElementById('user-name');
+        const userPic = document.getElementById('user-pic');
+        const scoreBadge = document.getElementById('user-total-score');
+        const loginModal = document.getElementById('custom-login-modal');
+
+        let currentAvatarUrl = 'https://img.icons8.com/color/96/spiderman-head.png';
+
+        window.selectAvatar = (el, url) => {
+            currentAvatarUrl = url;
+            document.querySelectorAll('.avatar-option').forEach(img => {
+                img.classList.remove('selected');
+            });
+            el.classList.add('selected');
+        };
+
+        window.changeAvatar = async (url) => {
+            const savedUser = localStorage.getItem('mathIslandUser');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                user.avatar = url;
+
+                localStorage.setItem('mathIslandUser', JSON.stringify(user));
+                updateUI(user);
+
+                try {
+                    const userRef = doc(db, "users", user.id);
+                    await setDoc(userRef, { avatar: url }, { merge: true });
+                    fetchLeaderboard();
+                } catch (e) {
+                    console.error("Avatar güncellenemedi:", e);
+                }
+            }
+        };
+
+        window.openLoginModal = () => { loginModal.classList.remove('hidden'); loginModal.classList.add('flex'); };
+        window.closeLoginModal = () => { loginModal.classList.add('hidden'); loginModal.classList.remove('flex'); };
+        loginBtn.addEventListener('click', openLoginModal);
+
+        function showWelcomeModal(name, score, isNewUser) {
+            const modal = document.getElementById('welcome-modal');
+            const contentBox = document.getElementById('welcome-modal-content');
+            const title = document.getElementById('welcome-title');
+            const desc = document.getElementById('welcome-desc');
+            const scoreBox = document.getElementById('welcome-score-box');
+            const scoreText = document.getElementById('welcome-score');
+            const btn = document.getElementById('welcome-btn');
+
+            if (isNewUser) {
+                contentBox.className = "bg-white p-8 rounded-3xl shadow-2xl max-sm w-full text-center relative border-4 border-purple-400 modal-animate";
+                title.innerText = `Hoş Geldin ${name}!`;
+                title.className = "text-2xl font-black text-purple-500 mb-2";
+                desc.innerText = "Matematik Adası'ndaki maceran başlıyor...";
+                scoreBox.style.display = "none";
+                btn.className = "w-full bg-purple-400 hover:bg-purple-500 text-white font-black py-4 rounded-2xl shadow-[0_5px_15px_rgba(192,132,252,0.4)] transition transform hover:-translate-y-1 text-xl";
+                btn.innerText = "BAŞLA!";
+            } else {
+                contentBox.className = "bg-white p-8 rounded-3xl shadow-2xl max-sm w-full text-center relative border-4 border-green-400 modal-animate";
+                title.innerText = `Hoş Geldin ${name}!`;
+                title.className = "text-2xl font-black text-green-500 mb-2";
+                desc.innerText = "Seni tekrar görmek çok güzel.";
+                scoreBox.style.display = "block";
+                scoreText.innerText = `${score} ⭐`;
+                btn.className = "w-full bg-green-400 hover:bg-green-500 text-white font-black py-4 rounded-2xl shadow-[0_5px_15px_rgba(74,222,128,0.4)] transition transform hover:-translate-y-1 text-xl";
+                btn.innerText = "DEVAM ET";
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        window.macerayaBasla = async (event) => {
+            const isim = document.getElementById('login-isim').value.trim();
+            const soyad = document.getElementById('login-soyad').value.trim();
+            const sinif = document.getElementById('login-sinif').value;
+
+            if (!isim || !soyad || !sinif) {
+                alert("Lütfen adını, soyadını ve sınıfını eksiksiz gir! 😊");
+                return;
+            }
+
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "Yükleniyor... ⏳";
+            btn.disabled = true;
+
+            try {
+                const safeStr = (str) => {
+                    return str.toLowerCase()
+                        .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
+                        .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
+                        .replace(/[^a-z0-9]/g, '');
+                };
+
+                const userId = `${safeStr(isim)}_${safeStr(soyad)}_${safeStr(sinif)}`;
+                const userRef = doc(db, "users", userId);
+                const docSnap = await getDoc(userRef);
+
+                let userData;
+                let isNewUser = false;
+
+                if (docSnap.exists()) {
+                    userData = docSnap.data();
+
+                    // Eksik alanları koruma altına alıyoruz
+                    userData.completedGames = userData.completedGames || [];
+                    userData.completedTopics = userData.completedTopics || [];
+                    userData.avatar = currentAvatarUrl;
+                    userData.ad = isim;
+                    userData.soyad = soyad;
+                    userData.sinif = sinif;
+
+                } else {
+                    isNewUser = true;
+                    userData = {
+                        id: userId,
+                        ad: isim,
+                        soyad: soyad,
+                        sinif: sinif,
+                        score: 0,
+                        completedGames: [],
+                        completedTopics: [],
+                        avatar: currentAvatarUrl
+                    };
+                }
+
+                await setDoc(userRef, userData, { merge: true });
+
+                localStorage.setItem('mathIslandUser', JSON.stringify(userData));
+                closeLoginModal();
+                updateUI(userData);
+                fetchLeaderboard();
+
+                showWelcomeModal(userData.ad, userData.score, isNewUser);
+
+            } catch (error) {
+                console.error("Firebase Hatası:", error);
+                alert("Bağlantı hatası oluştu. Lütfen öğretmenine haber ver!");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        function updateUI(user) {
+            loginBtn.style.display = 'none';
+            userInfo.style.display = 'flex';
+            scoreBadge.style.display = 'inline-block';
+            userName.textContent = user.ad;
+            userPic.src = user.avatar;
+            scoreBadge.innerText = `${user.score} ⭐`;
+
+            const modalNameEl = document.getElementById('modal-user-name');
+            const modalPicEl = document.getElementById('modal-user-pic');
+            const modalScoreEl = document.getElementById('modal-score');
+            const modalGradeEl = document.getElementById('modal-user-grade');
+
+            if (modalNameEl) modalNameEl.innerText = `${user.ad} ${user.soyad}`;
+            if (modalPicEl) modalPicEl.src = user.avatar;
+            if (modalScoreEl) modalScoreEl.innerText = user.score;
+            if (modalGradeEl) modalGradeEl.innerText = user.sinif;
+        }
+
+        const modalLogoutBtn = document.getElementById('modal-logout-btn');
+        if (modalLogoutBtn) {
+            modalLogoutBtn.addEventListener('click', async () => {
+                const savedUser = localStorage.getItem('mathIslandUser');
+                if (savedUser) {
+                    const user = JSON.parse(savedUser);
+                    if (user.id) {
+                        try {
+                            const userRef = doc(db, "users", user.id);
+                            await setDoc(userRef, {
+                                score: user.score,
+                                completedGames: user.completedGames || [],
+                                completedTopics: user.completedTopics || [],
+                                avatar: user.avatar
+                            }, { merge: true });
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+                }
+
+                localStorage.removeItem('mathIslandUser');
+                location.reload();
+            });
+        }
+
+        async function fetchLeaderboard() {
+            try {
+                const q = query(collection(db, "users"), orderBy("score", "desc"), limit(5));
+                const querySnapshot = await getDocs(q);
+
+                const wrapper = document.getElementById('leaderboard-wrapper');
+                const list = document.getElementById('leaderboard-list');
+
+                wrapper.innerHTML = '';
+                list.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    wrapper.innerHTML = '<p style="text-align:center; color:#1e3a8a; font-weight: bold; width:100%;">Henüz veri yok. İlk süper kahraman sen ol!</p>';
+                    return;
+                }
+
+                let rank = 1;
+                const medals = ['gold', 'silver', 'bronze'];
+
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const safeName = data.ad ? encodeURIComponent(data.ad) : 'U';
+                    const userPhoto = data.avatar || `https://img.icons8.com/color/96/spiderman-head.png`;
+
+                    const fullName = `${data.ad || ''} ${data.soyad ? data.soyad.charAt(0) + '.' : ''}`;
+                    const grade = data.sinif || "Belirtilmedi";
+
+                    if (rank <= 3) {
+                        wrapper.innerHTML += `
+                        <div class="podium-card ${medals[rank - 1]} flex flex-col items-center w-32 md:w-40 p-3">
+                            <div class="rank-badge">${rank}</div>
+                            <div class="avatar flex justify-center"><img src="${userPhoto}" style="width:65px; height:65px; border-radius:50%; object-fit:contain; border: 4px solid white; background-color: white; padding: 4px;"></div>
+                            <h3 class="flex flex-col items-center justify-center mt-3 font-black text-gray-800 text-lg w-full text-center">
+                                <span class="truncate w-full block">${fullName}</span> 
+                                <span class="text-xs font-bold text-gray-500 bg-white px-3 py-1 rounded-full mt-2 shadow-sm">${grade}</span>
+                            </h3>
+                            <p class="score text-2xl font-black text-yellow-500 mt-2 whitespace-nowrap">${data.score || 0} ⭐</p>
+                        </div>`;
+                    } else {
+                        list.innerHTML += `
+                        <div class="list-item flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm mb-3 border border-gray-100 hover:border-blue-200 transition-all">
+                            <div class="flex items-center w-2/3">
+                                <span class="font-black text-gray-400 text-xl w-8 flex-shrink-0">${rank}.</span>
+                                <img src="${userPhoto}" style="width:45px; height:45px; border-radius:50%; object-fit:contain; border: 3px solid white; background-color: white; padding: 2px;" class="mr-3 flex-shrink-0 shadow-sm"> 
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-black text-gray-800 truncate">${fullName}</span> 
+                                    <span class="text-xs font-bold text-gray-500">${grade}</span>
+                                </div>
+                            </div>
+                            <div class="w-1/3 text-right">
+                                <span class="points font-black text-yellow-500 text-xl whitespace-nowrap">${data.score || 0} ⭐</span>
+                            </div>
+                        </div>`;
+                    }
+                    rank++;
+                });
+            } catch (e) {
+                console.error("Liderlik tablosu hatası:", e);
+                document.getElementById('leaderboard-wrapper').innerHTML = '<p style="text-align:center; color:red;">Tablo yüklenemedi!</p>';
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const savedUser = localStorage.getItem('mathIslandUser');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                updateUI(user);
+
+                try {
+                    if (user.id) {
+                        const userRef = doc(db, "users", user.id);
+                        await setDoc(userRef, {
+                            score: user.score,
+                            completedGames: user.completedGames || [],
+                            completedTopics: user.completedTopics || [],
+                            avatar: user.avatar
+                        }, { merge: true });
+                    }
+                } catch (syncError) {
+                    console.error("Puan Firebase'e senkronize edilemedi:", syncError);
+                }
+            }
+
+            await fetchLeaderboard();
+        });
+    </script>
+</body>
+
+</html>
