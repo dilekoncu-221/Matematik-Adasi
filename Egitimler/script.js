@@ -1,5 +1,5 @@
 // --- 1. API Ayarları ---
-const API_KEY = "AIzaSyC33kQt5kz6QYcn94RcZCQzChTGBM5fnG4";
+const API_KEY = "AIzaSyC33kQt5kz6QYcn94RcZCQzChTGBM5fnG4gig"; // Buraya az önce oluşturduğun tam API anahtarını yazdığından emin ol!
 
 // --- 2. Konu Veri Seti ---
 const classTopics = {
@@ -78,7 +78,7 @@ window.currentQuizStep = 0;
 window.currentLessonPoints = 10;
 window.userAnswers = {};
 
-// --- 3. YAPAY ZEKA (GEMINI API) BAĞLANTISI ---
+// --- 3. YAPAY ZEKA (GEMINI API) BAĞLANTISI (GÜNCELLENDİ) ---
 async function fetchContentFromAI(topicName, grade) {
     const prompt = `Sen tatlı, eğlenceli ama ÖĞRENCİ HATA YAPTIĞINDA DOĞRUSUNU GÖSTEREN bir ilkokul matematik öğretmenisin. 
     Öğrencin ${grade}. sınıf öğrencisi. Ona "${topicName}" konusunu anlatacaksın.
@@ -125,26 +125,34 @@ async function fetchContentFromAI(topicName, grade) {
     Cevaplar (correct) 0,1,2 veya 3 olmalı. Sınav tam bu konuya ait olmalı.`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+        // HATA DÜZELTİLDİ: Model gemini-1.5-flash yapıldı.
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                // YENİ EKLENDİ: Gemini'nin kesinlikle JSON dönmesini zorunlu kılar.
+                generationConfig: {
+                    response_mime_type: "application/json"
+                }
+            })
         });
 
         const result = await response.json();
-        if (!response.ok || result.error) return null;
 
-        let aiText = result.candidates[0].content.parts[0].text;
-        aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
-        const firstBrace = aiText.indexOf('{');
-        const lastBrace = aiText.lastIndexOf('}');
-
-        if (firstBrace !== -1 && lastBrace !== -1) {
-            aiText = aiText.substring(firstBrace, lastBrace + 1);
+        // Eğer API'den hata dönerse
+        if (!response.ok || result.error) {
+            console.error("API Hatası:", result.error);
+            return null;
         }
 
+        let aiText = result.candidates[0].content.parts[0].text;
+
+        // Artık metin temizlemeye gerek yok, doğrudan JSON parse ediyoruz.
         return JSON.parse(aiText);
+
     } catch (error) {
+        console.error("Bağlantı veya Parse Hatası:", error);
         return null;
     }
 }

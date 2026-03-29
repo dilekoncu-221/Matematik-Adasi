@@ -60,6 +60,7 @@ const generateFallbackQuestions = (grade) => {
     return questions;
 };
 
+// --- YENİLENMİŞ VE DÜZELTİLMİŞ API FONKSİYONU ---
 async function fetchQuestionsFromAI(topicName, grade) {
     const prompt = `Sen tatlı ve neşeli bir ilkokul matematik öğretmenisin. 
     Öğrencin ${grade}. sınıf öğrencisi. Konu: "${topicName}".
@@ -75,30 +76,30 @@ async function fetchQuestionsFromAI(topicName, grade) {
             "explanation": "Öğrenci yanlış cevapladığında ona hatasını anlatan, cesaret verici ve tatlı bir açıklama."
         }
     ]
-    DİKKAT: correctAnswer alanı SADECE DOĞRU ŞIKKIN METNİYLE BİREBİR AYNI olmalıdır (Örneğin "Seçenek 2"). "A", "B" gibi harf koyma, options dizisinden doğru olanı aynen yaz. Toplam 10 obje üret.`;
+    DİKKAT: correctAnswer alanı SADECE DOĞRU ŞIKKIN METNİYLE BİREBİR AYNI olmalıdır (Örneğin "Seçenek 2"). Toplam 10 obje üret.`;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: {
+                    response_mime_type: "application/json"
+                }
+            })
         });
 
         const result = await response.json();
-        if (!response.ok || result.error) return null;
-
-        let aiText = result.candidates[0].content.parts[0].text;
-        aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
-        const firstBracket = aiText.indexOf('[');
-        const lastBracket = aiText.lastIndexOf(']');
-
-        if (firstBracket !== -1 && lastBracket !== -1) {
-            aiText = aiText.substring(firstBracket, lastBracket + 1);
+        if (!response.ok || result.error) {
+            console.error("API Hatası:", result.error);
+            return null;
         }
 
+        let aiText = result.candidates[0].content.parts[0].text;
         return JSON.parse(aiText);
     } catch (error) {
-        console.error("API Hatası:", error);
+        console.error("Bağlantı veya Parse Hatası:", error);
         return null;
     }
 }
