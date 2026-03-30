@@ -336,7 +336,18 @@ window.startLesson = async (id, name, grade) => {
     const questionText = document.getElementById('quiz-question-text');
     const optionsContainer = document.getElementById('quiz-options-container');
 
-    questionText.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles text-blue-300 animate-pulse mr-2"></i> Büyülü Sorular Hazırlanıyor...`;
+    questionText.innerHTML = `
+        <div class="flex flex-col items-center justify-center w-full max-w-md mx-auto relative z-10 py-6">
+            <i class="fa-solid fa-wand-magic-sparkles text-7xl text-blue-300 mb-6 animate-pulse"></i>
+            <h3 class="text-3xl font-black text-blue-500 text-center mb-6">
+                Büyülü Sorular Hazırlanıyor...
+            </h3>
+            <div class="w-full bg-blue-100 rounded-full h-4 mb-4 overflow-hidden relative shadow-inner">
+                <div class="bg-gradient-to-r from-blue-400 to-blue-500 h-4 rounded-full animate-loading absolute left-0 top-0 w-1/2"></div>
+            </div>
+            <p class="text-gray-400 font-bold mt-2 text-center text-lg">Yapay zeka öğretmenin soruları yazıyor 🚀</p>
+        </div>
+    `;
     optionsContainer.innerHTML = '';
     document.getElementById('question-counter').innerText = 'Sorular Yükleniyor';
     prevBtn.classList.add('hidden');
@@ -438,6 +449,14 @@ const updateProfileUI = (user) => {
     if (modalScoreEl) modalScoreEl.innerText = user.score;
 };
 
+const highlightUserGradeButton = (userGrade) => {
+    const btn = document.getElementById(`btn-${userGrade}`);
+    if (btn && !btn.querySelector('.fa-crown')) {
+        btn.classList.add('relative');
+        btn.innerHTML += `<i class="fa-solid fa-crown text-yellow-400 absolute -top-4 -right-3 text-3xl rotate-12 drop-shadow-md animate-pulse"></i>`;
+    }
+};
+
 // --- Sayfa Yüklenirken Çalışan Ana Kod ---
 document.addEventListener("DOMContentLoaded", () => {
     const savedUser = localStorage.getItem('mathIslandUser');
@@ -466,6 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
             startingGrade = '1';
         }
 
+        highlightUserGradeButton(startingGrade);
         filterGrade(startingGrade);
 
     } else {
