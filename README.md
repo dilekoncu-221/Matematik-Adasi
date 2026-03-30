@@ -38,10 +38,6 @@ Projenin kurulumu oldukça basittir, interneti kotalı/kısıtlı çocukların d
 2. Klasör içerisindeki `index.html` dosyasını herhangi bir internet tarayıcısında (Google Chrome, Safari vb.) açın.
 3. *Matematik Adası*'nın kapıları öğrenmeye hemen açılır!
 
-## 🔗 Önemli Bağlantılar
-
-- 🎥 **Proje Demo Videosu:** [Buraya Loom veya YouTube Linki Gelecek]
-- 🌐 **Canlı Yayın Linki:** [Buraya Lovable veya Netlify Adresi Gelecek]
 
 ---
 > *"Bir çocuğa matematiği sevdirmek, ona dünyayı şekillendirecek analitik bir gözlük armağan etmektir."*
