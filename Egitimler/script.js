@@ -1,5 +1,5 @@
 // --- 1. API Ayarları ---
-const API_KEY = "AIzaSyAmFCyubmDs5eQingTjTD_eUeT9bBsJIIg";
+const API_KEY = "AIzaSyDwdHAuPDs1KfpSm3JoWz-BR3skO_B-1zw";
 
 // --- 2. Konu Veri Seti ---
 const classTopics = {
@@ -125,10 +125,16 @@ async function fetchContentFromAI(topicName, grade) {
     Cevaplar (correct) 0,1,2 veya 3 olmalı. Sınav tam bu konuya ait olmalı.`;
 
     try {
+        // SADECE BU KISMI GÜNCELLE
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: {
+                    responseMimeType: "application/json" // Çıktının kesinlikle JSON olmasını sağlar
+                }
+            })
         });
 
         const result = await response.json();
