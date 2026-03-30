@@ -1,5 +1,5 @@
 // --- 1. API Ayarları ---
-const API_KEY = "AIzaSyDwdHAuPDs1KfpSm3JoWz-BR3skO_B-1zw";
+const API_KEY = "AIzaSyBiALtI_sWAORgmWkHE40SeZIzF2oktX68";
 
 // --- 2. Konu Veri Seti ---
 const classTopics = {
