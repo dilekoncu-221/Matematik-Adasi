@@ -1,7 +1,7 @@
 // --- 1. API Ayarları ---
 // UYARI: Bu anahtarı (API_KEY) canlı ortamda frontend kodunda bırakmak güvenlik açığı yaratır.
 // Projeyi yayınladığında bu isteği bir backend (sunucu) üzerinden yapman çok daha güvenli olacaktır.
-const API_KEY = "AIzaSyBiALtI_sWAORgmWkHE40SeZIzF2oktX68";
+const API_KEY = "AIzaSyBpoivPsOpmaOB-Qwjlc2O_d0joHNHmdnk";
 
 const classData = {
     "1": ["Rakamları Tanıyalım", "Nesne Sayma", "Toplama Giriş", "Çıkarma Giriş", "Geometrik Şekiller", "Örüntüler", "Paralarımız", "Zamanı Ölçme", "Uzamsal İlişkiler"],
