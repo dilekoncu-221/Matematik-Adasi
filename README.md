@@ -38,6 +38,12 @@ Projenin kurulumu oldukça basittir, interneti kotalı/kısıtlı çocukların d
 2. Klasör içerisindeki `index.html` dosyasını herhangi bir internet tarayıcısında (Google Chrome, Safari vb.) açın.
 3. *Matematik Adası*'nın kapıları öğrenmeye hemen açılır!
 
+## 🔗 Proje Linkleri (README ve Yayına Alma Süreçleri İçin)
+Aşağıdaki link alanları, proje tamamlandığında veya repoya yüklendiğinde doldurulacaktır:
+
+**Demo Video:**https://www.loom.com/share/3fd869dde5cc4c80bdf11537bc90de36
+Yayın/Canlı Ortam (Live URL): https://matematik-adasi.vercel.app/index.html
+
 
 ---
 > *"Bir çocuğa matematiği sevdirmek, ona dünyayı şekillendirecek analitik bir gözlük armağan etmektir."*
