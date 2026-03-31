@@ -4,11 +4,6 @@
 </div>
 
 ---
-
-# 🌴 Matematik Adası
-
-**Öğrenmek her çocuğun hakkı, sevmek ise Matematik Adası ile çok kolay!**
-
 Matematik Adası, eğitimden uzak kalan veya özel gereksinimleri olan ilkokul 1-4. sınıf öğrencilerinin matematikle bağlarını koparmamaları için tasarlanmış çocuk dostu bir dijital öğrenme platformudur.
 
 Bu proje yalnızca bir web sitesi değil; çocuklara güvenli, yargısız ve motive edici bir öğrenme ortamı sunan, hataların birer öğrenme adımı olarak görüldüğü özel bir eğitim dünyasıdır.
