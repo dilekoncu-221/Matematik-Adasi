@@ -33,5 +33,5 @@ Matematik Adası sınav yarışına ve zaman stresine (süreölçer, liderlik ta
 ## 🔗 Proje Linkleri (README ve Yayına Alma Süreçleri İçin)
 Aşağıdaki link alanları, proje tamamlandığında veya repoya yüklendiğinde doldurulacaktır:
 
-- **Demo Video:** [Loom veya YouTube Video Linki Buraya Kullanılacak]
-- **Yayın/Canlı Ortam (Live URL):** [Netlify / Lovable / Vercel Proje Adresi Buraya Eklenecek]
+- **Demo Video:** https://www.loom.com/share/60c0f0e847d644379d0d450c8e811eb6
+- **Yayın/Canlı Ortam (Live URL):** https://matematik-adasi.vercel.app/index.html
