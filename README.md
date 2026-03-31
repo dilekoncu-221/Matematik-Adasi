@@ -65,8 +65,8 @@ Proje, internet erişimi kısıtlı veya kotası sınırlı kullanıcılar için
 
 ## 🔗 Proje Linkleri
 
-- **Demo Video:** [Loom Demo](https://www.loom.com/share/d280900c1f434779801a2c273d1a1941)
-- **Canlı Yayın / Live URL:** [Matematik Adası](https://matematik-adasi.vercel.app/index.html)
+- **Demo Video:** [Loom Demo]: https://www.loom.com/share/d280900c1f434779801a2c273d1a1941
+- **Canlı Yayın / Live URL:** : https://matematik-adasi.vercel.app/
 
 ---
 
