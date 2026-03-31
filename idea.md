@@ -29,9 +29,3 @@ Matematik Adası sınav yarışına ve zaman stresine (süreölçer, liderlik ta
 - Ebeveynler, çocuklarının eğitim eksiğini kapatırken daha az stres yaşayacak ve eğitimde fırsat eşitliği yolunda sağlam, dijital bir köprü inşa edilmiş olacak.
 
 ---
-
-## 🔗 Proje Linkleri (README ve Yayına Alma Süreçleri İçin)
-Aşağıdaki link alanları, proje tamamlandığında veya repoya yüklendiğinde doldurulacaktır:
-
-- **Demo Video:** [Loom veya YouTube Video Linki Buraya Kullanılacak]
-- **Yayın/Canlı Ortam (Live URL):** [Netlify / Lovable / Vercel Proje Adresi Buraya Eklenecek]

@@ -13,5 +13,4 @@ Matematik Adası, hantal sistemler yerine tamamen hızlı, hafif ve evrensel web
 ## 🤔 Seçim Gerekçesi ve Sosyal Avantajlar
 
 1. **🚀 Maksimum Performans:** React veya Vue gibi büyük framework'lerin getirdiği karmaşıklıklardan bu fazda kaçınılmıştır. Çünkü uygulamanın çok eski donanımlarda, tabletlerde ve kotalı internet bağlantılarında bile **anında** açılabilmesi planlanmıştır; bu, eğitim hakkaniyeti için kritik bir konudur.
-2. **🔌 Çevrimdışı (Offline) Hazır:** Proje mimarisi tamamen istemci tarafında (client-side) çalıştığı için yerel bir cihazda hızlıca çalışabilir, kesintisiz hizmet sunar.
-3. **🌱 Bağımsız ve Sürdürülebilir:** Geliştiricilerin ve sisteme katkı verecek eğitimcilerin her an koda müdahale edip değiştirebilmesi için karmaşık yapılandırmalara (Webpack, Vite vs.) boğulmayan yalin ve "Vanilla" bir yaklaşım tercih edilmiştir.
+2. **🌱 Bağımsız ve Sürdürülebilir:** Geliştiricilerin ve sisteme katkı verecek eğitimcilerin her an koda müdahale edip değiştirebilmesi için karmaşık yapılandırmalara (Webpack, Vite vs.) boğulmayan yalin ve "Vanilla" bir yaklaşım tercih edilmiştir.
