@@ -42,7 +42,7 @@ Projenin kurulumu oldukça basittir, interneti kotalı/kısıtlı çocukların d
 Aşağıdaki link alanları, proje tamamlandığında veya repoya yüklendiğinde doldurulacaktır:
 
 **Demo Video:**https://www.loom.com/share/3fd869dde5cc4c80bdf11537bc90de36
-**Yayın/Canlı Ortam (Live URL): https://matematik-adasi.vercel.app/index.html
+**Yayın/Canlı Ortam (Live URL)**: https://matematik-adasi.vercel.app/index.html
 
 
 ---
